@@ -1,11 +1,14 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import clientApi from "./clientApi";
+import { CreateCommunityProps } from "@/components/communities/modals/CreateCommunityModal";
+import { EventCreatingProps } from "@/components/communities/modals/EventCreatingModal";
+import { JobPostingProps } from "@/components/communities/modals/JobPostingModal";
 
 
 export const useCreateCommunityMutation = () => {
    const queryClient=useQueryClient()
   return useMutation({
-    mutationFn: (payload: any) => clientApi.post('/communities/create', payload),
+    mutationFn: (payload: CreateCommunityProps) => clientApi.post('/communities/create', payload),
     onSuccess:()=>{
       queryClient.invalidateQueries({queryKey: ["communities"]})
     }
@@ -91,7 +94,7 @@ export const useCreateEventMutation = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (payload: any) =>
+    mutationFn: (payload: EventCreatingProps) =>
       clientApi.post('/communities/event', payload),
 
     onSuccess: (_, payload) => {
@@ -105,7 +108,7 @@ export const usePostJobMutation = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (payload: any) =>
+    mutationFn: (payload: JobPostingProps) =>
       clientApi.post('/communities/job', payload),
 
     onSuccess: (_, payload) => {
@@ -119,12 +122,12 @@ export const useCreateRentPropertyMutation = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (payload: any) =>
+    mutationFn: (payload: FormData) =>
       clientApi.post('/communities/rent', payload),
 
     onSuccess: (_, payload) => {
       queryClient.invalidateQueries({
-        queryKey: ["single-community", payload.community_id]
+        queryKey: ["single-community"]
       });
     }
   });

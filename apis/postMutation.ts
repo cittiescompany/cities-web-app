@@ -5,7 +5,7 @@ import clientApi from "./clientApi";
 export const useCreatePostMutation = () => {
    const queryClient=useQueryClient()
   return useMutation({
-    mutationFn: (payload: any) => clientApi.post('/post/create', payload),
+    mutationFn: (payload: FormData) => clientApi.post('/post/create', payload),
     onSuccess:()=>{
       queryClient.invalidateQueries({queryKey: ["posts"]})
     }

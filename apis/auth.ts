@@ -2,6 +2,7 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import clientApi from "./clientApi";
 import axios from "axios";
+import { ProfileUpdateProps } from "@/components/dialogs/ProfileUpdateDialog";
 const baseUrl = process.env.NEXT_PUBLIC_BASE_URL
  const token = typeof window !== "undefined" ? localStorage.getItem("auth_token") : null;
  const bearerToken =`Bearer ${token}`
@@ -17,7 +18,7 @@ export const useIndividualSignupMutation = () => {
 export const useUpdateUserMutation = () => {
    const queryClient=useQueryClient()
   return useMutation({
-    mutationFn: (payload: any) => clientApi.patch('/user', payload),
+    mutationFn: (payload: ProfileUpdateProps) => clientApi.patch('/user', payload),
     onSuccess:()=>{
       queryClient.invalidateQueries({queryKey: ["profile"]})
     }
@@ -83,23 +84,32 @@ export const useUpdateUserMutation = () => {
 
 
 export const useChangeProfileImageMutation = () => {
-  const queryClient=useQueryClient()
+  const queryClient = useQueryClient();
+
   return useMutation({
-    mutationFn: async (payload:any) => {
-      return axios.patch(baseUrl+"/user/editprofile/profile_pic", payload,{headers:{
-    "Content-Type": "multipart/form-data", "Authorization":bearerToken
-  }});
+    mutationFn: async (payload: FormData) => {
+      return axios.patch(
+        baseUrl + "/user/editprofile/profile_pic",
+        payload,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+            Authorization: bearerToken,
+          },
+        }
+      );
     },
-    onSuccess:()=>{
-      queryClient.invalidateQueries({queryKey: ["profile"]})
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["profile"] });
     }
   });
 };
 
+
 export const useChangeCoverImageMutation = () => {
   const queryClient=useQueryClient()
   return useMutation({
-    mutationFn: async (payload:any) => {
+    mutationFn: async (payload: FormData) => {
       return axios.patch(baseUrl+"/user/editprofile/cover_img", payload,{headers:{
     "Content-Type": "multipart/form-data", "Authorization":bearerToken
   }});

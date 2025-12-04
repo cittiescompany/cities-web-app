@@ -95,7 +95,7 @@ console.log("User in ProfileUpdateDialog:", user);
 
   const onSubmit = async (data: ProfileUpdateProps) => {
     try {
-      const rawData = { ...data, phone_number: Number(data.phone_number) };
+      const rawData = { ...data, phone_number: String(data.phone_number) };
       
       // const res = await clientApi.put(`/user/update/${user.unique_id}`, rawData);
       const res = await updateUser(rawData);
