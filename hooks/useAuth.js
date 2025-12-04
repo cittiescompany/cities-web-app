@@ -9,7 +9,7 @@ export const useAuth = () => {
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const dispatch = useDispatch();
-  const { details: user, isLoading } = useSelector(() => state.user);
+  const { details: user, isLoading } = useSelector((state) => state.user);
 
   // Logout function that can be used anywhere
   const logout = () => {
