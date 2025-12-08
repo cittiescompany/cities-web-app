@@ -27,6 +27,7 @@ export type ResetPasswordProps = z.infer<typeof resetPasswordSchema>;
 export default function ForgotPasswordPhone() {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
+    const [codeError, setCodeError] = useState(false)
   const form = useForm<ResetPasswordProps>({
     resolver: zodResolver(resetPasswordSchema),
     defaultValues: {
@@ -34,6 +35,14 @@ export default function ForgotPasswordPhone() {
       country_code: "",
     },
   });
+
+    const handleCheckCode = () => {
+  const countryCode = form.getValues("country_code");
+  if(!countryCode){
+    setCodeError(true);
+  }
+  
+}
 
   const onSubmit = async (data: ResetPasswordProps) => {
     try {
@@ -66,9 +75,9 @@ export default function ForgotPasswordPhone() {
   };
 
   return (
-    <div className="max-h-screen bg-white flex">
+    <div className="min-h-screen bg-white flex items-center justify-center">
       {/* Left Side - Image */}
-      <div className="hidden lg:flex lg:w-1/2 bg-gradient-to-br from-blue-600 to-indigo-700 items-center justify-center">
+      {/* <div className="hidden lg:flex lg:w-1/2 bg-gradient-to-br from-blue-600 to-indigo-700 items-center justify-center">
         <div className="text-center w-full h-full text-white">
           <div className="w-full h-full relative">
             <Image
@@ -79,7 +88,7 @@ export default function ForgotPasswordPhone() {
             />
           </div>
         </div>
-      </div>
+      </div> */}
 
       {/* Right Side - Form */}
       <div className="w-full lg:w-1/2 flex items-center justify-center p-6 sm:p-8 lg:p-12">
@@ -110,19 +119,32 @@ export default function ForgotPasswordPhone() {
                   control={form.control}
                   name="phone_number"
                   render={({ field }) => (
-                    <FormItem>
+                      <FormItem>
                       <FormLabel>Phone number</FormLabel>
                       <FormControl>
                         <div className="text flex gap-2">
-                          <CountrySelect form={form} />
-                          <Input
-                            className="h-11"
-                            placeholder="070*******25"
-                            {...field}
-                          />
+                          <div>
+                            <CountrySelect
+                              setCodeError={setCodeError}
+                              codeError={codeError}
+                              form={form}
+                            />
+                            {codeError && (
+                              <p className="text-sm text-red-500">
+                                Code is required
+                              </p>
+                            )}
+                          </div>
+                          <div className="w-full">
+                            <Input
+                              className="h-11"
+                              placeholder="070*******25"
+                              {...field}
+                            />
+                            <FormMessage className="mt-2" />
+                          </div>
                         </div>
                       </FormControl>
-                      <FormMessage />
                     </FormItem>
                   )}
                 />
@@ -132,6 +154,7 @@ export default function ForgotPasswordPhone() {
                 className="bg-[#3561D3] cursor-pointer hover:bg-[#3561D3] w-full h-14 "
                 type="submit"
                 disabled={loading}
+onClick={handleCheckCode}
               >
                 {loading && <Loader className="animate-spin" />}
 

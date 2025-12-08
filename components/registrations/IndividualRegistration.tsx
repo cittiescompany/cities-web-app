@@ -39,6 +39,7 @@ export default function IndividualRegistration() {
 
   const [loading, setLoading] = useState(false);
   const [passwordType, setPasswordType] = useState("password");
+   const [codeError, setCodeError] = useState(false)
   const [month, setMonth] = useState<Date>(new Date());
   const { router } = useParamHook();
   const form = useForm<userSchemaProps>({
@@ -54,6 +55,14 @@ export default function IndividualRegistration() {
       phone_number: "",
     },
   });
+
+  const handleCheckCode = () => {
+  const countryCode = form.getValues("country_code");
+  if(!countryCode){
+    setCodeError(true);
+  }
+  
+}
 
   const onSubmit = async (data: userSchemaProps) => {
     try {
@@ -87,9 +96,9 @@ export default function IndividualRegistration() {
   };
 
   return (
-    <div className="max-h-screen bg-white flex">
+    <div className="max-h-screen bg-white flex py-8">
       {/* Left Side - Image */}
-      <div className="hidden lg:flex lg:w-1/2 bg-gradient-to-br from-blue-600 to-indigo-700 items-center justify-center">
+      {/* <div className="hidden lg:flex lg:w-1/2 bg-gradient-to-br from-blue-600 to-indigo-700 items-center justify-center">
         <div className="text-center w-full h-full text-white">
           <div className="w-full h-full">
             <img
@@ -99,11 +108,12 @@ export default function IndividualRegistration() {
             />
           </div>
         </div>
-      </div>
+      </div> */}
 
       {/* Right Side - Form */}
-      <div className="w-full lg:w-1/2 flex items-center justify-center p-6 sm:p-8 lg:p-12 overflow-y-auto">
-        <div className="w-full max-w-md">
+      {/* <div className="w-full lg:w-1/2 flex items-center justify-center p-6 sm:p-8 lg:p-12 overflow-y-auto"> */}
+      <div className="w-full lg:w-1/2 mx-auto flex items-center justify-center p-6 sm:p-8 lg:p-12">
+        <div className="w-full">
           {/* Back Button */}
           <button
             onClick={() => router.back()}
@@ -131,6 +141,7 @@ export default function IndividualRegistration() {
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
               {/* Email field */}
+<div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <FormField
                 control={form.control}
                 name="first_name"
@@ -138,7 +149,7 @@ export default function IndividualRegistration() {
                   <FormItem>
                     <FormLabel>First name</FormLabel>
                     <FormControl>
-                      <Input className="h-11" placeholder="John" {...field} />
+                      <Input className="h-11 w-full" placeholder="John" {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -157,6 +168,7 @@ export default function IndividualRegistration() {
                   </FormItem>
                 )}
               />
+</div>
               <FormField
                 control={form.control}
                 name="email"
@@ -182,16 +194,29 @@ export default function IndividualRegistration() {
                   <FormItem>
                     <FormLabel>Phone number</FormLabel>
                     <FormControl>
-                      <div className="text flex gap-2">
-                        <IndividualCountrySelect form={form} />
-                        <Input
-                          className="h-11"
-                          placeholder="070*******25"
-                          {...field}
-                        />
-                      </div>
+                         <div className="text flex gap-2">
+                          <div>
+                            <IndividualCountrySelect
+                              setCodeError={setCodeError}
+                              codeError={codeError}
+                              form={form}
+                            />
+                            {codeError && (
+                              <p className="text-sm text-red-500">
+                                Code is required
+                              </p>
+                            )}
+                          </div>
+                          <div className="w-full">
+                            <Input
+                              className="h-11"
+                              placeholder="070*******25"
+                              {...field}
+                            />
+                            <FormMessage className="mt-2" />
+                          </div>
+                        </div>
                     </FormControl>
-                    <FormMessage />
                   </FormItem>
                 )}
               />
@@ -274,7 +299,8 @@ export default function IndividualRegistration() {
                     <FormLabel className="flext justify-between">
                       Password{" "}
                       <button
-                        onClick={() => {
+                        onClick={(e) => {
+                          e.preventDefault();
                           passwordType === "password"
                             ? setPasswordType("text")
                             : setPasswordType("password");
@@ -309,6 +335,7 @@ export default function IndividualRegistration() {
                 className="bg-[#3561D3] cursor-pointer hover:bg-[#3561D3] w-full h-14 "
                 type="submit"
                 disabled={loading}
+                onClick={handleCheckCode}
               >
                 {loading && <Loader className="animate-spin" />}
 

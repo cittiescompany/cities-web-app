@@ -67,9 +67,9 @@ export default function EnterNewPassword() {
   };
 
   return (
-    <div className="min-h-screen bg-white flex">
+    <div className="min-h-screen bg-white flex items-center justify-center">
       {/* Left Side - Image */}
-      <div className="hidden lg:flex lg:w-1/2 bg-gradient-to-br from-blue-600 to-indigo-700 items-center justify-center">
+      {/* <div className="hidden lg:flex lg:w-1/2 bg-gradient-to-br from-blue-600 to-indigo-700 items-center justify-center">
         <div className="text-center w-full h-full text-white">
           <div className="w-full h-full">
             <img
@@ -79,7 +79,7 @@ export default function EnterNewPassword() {
             />
           </div>
         </div>
-      </div>
+      </div> */}
 
       {/* Right Side - Form */}
       <div className="w-full lg:w-1/2 flex items-center justify-center p-6 sm:p-8 lg:p-12 overflow-y-auto">

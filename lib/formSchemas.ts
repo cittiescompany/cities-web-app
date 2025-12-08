@@ -57,10 +57,10 @@ export const businessFormSchema = z.object({
     .string()
     .optional(),
   password: z
-    .string()
-    .min(6, { message: "Password must be at least 6 digits long" })
-    .max(10, { message: "Password must not be longer than 10 digits" })
-    .regex(/^[0-9]+$/, { message: "Password must contain only numbers" }),
+  .string()
+  .min(6, { message: "Password must be at least 6 characters long" })
+  .max(10, { message: "Password must not be longer than 10 characters" })
+  .regex(/^[A-Za-z0-9]+$/, { message: "Password must contain only letters and numbers" }),
 });
 
 export const loginSchema = z.object({
@@ -70,10 +70,10 @@ export const loginSchema = z.object({
     .min(10, { message: "Phone number is required" })
     .max(15, { message: "Phone number should not longer than 15 characters" }),
       pin: z
-    .string()
-    .min(6, { message: "Password must be at least 6 digits long" })
-    .max(10, { message: "Password must not be longer than 10 digits" })
-    .regex(/^[0-9]+$/, { message: "Password must contain only numbers" }),
+    .string().min(1, { message: "Password is required" }),
+    // .min(6, { message: "Password must be at least 6 digits long" })
+    // .max(10, { message: "Password must not be longer than 10 digits" })
+    // .regex(/^[0-9]+$/, { message: "Password must contain only numbers" }),
 })
 export const resetPasswordSchema = z.object({
   country_code: z.string().min(1, { message: "Country code is required" }),
