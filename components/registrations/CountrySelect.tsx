@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Select,
   SelectContent,
@@ -20,9 +20,17 @@ const resetPasswordSchema = z.object({
 
 export type ResetPasswordProps = z.infer<typeof resetPasswordSchema>;
 
-export default function CountrySelect({form}: {form: UseFormReturn<ResetPasswordProps>}) {
+export default function CountrySelect({form, codeError, setCodeError}: {form: UseFormReturn<ResetPasswordProps>, codeError:boolean, setCodeError: React.Dispatch<React.SetStateAction<boolean>>}) {
   const [selected, setSelected] = useState<string>("");
   const { countries } = useFormHook();
+
+    const code = form.getValues("country_code");
+    useEffect(() => {
+        if(code){
+          setCodeError(false);
+        }
+        
+      }, [code, setCodeError]);
 
 
   return (
@@ -38,7 +46,7 @@ export default function CountrySelect({form}: {form: UseFormReturn<ResetPassword
         }
       }}
       >
-        <SelectTrigger className="w-[130px] py-5">
+        <SelectTrigger className={`"w-[130px] py-5 ${codeError ? " border border-red-500" : ""}`}>
           {!selected && (
             <SelectValue className="text-xs" placeholder="country code" />
           )}

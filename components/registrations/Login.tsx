@@ -2,7 +2,7 @@
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Eye, EyeOff, Loader } from "lucide-react";
 import { useRouter } from "next/navigation";
 import img from "../../assets/images/image 1.png";
@@ -31,6 +31,7 @@ export type UserLoginProps = z.infer<typeof loginSchema>;
 export default function Login() {
   const [loading, setLoading] = useState(false);
   const [passwordType, setPasswordType] = useState("password");
+  const [codeError, setCodeError] = useState(false);
   const router = useRouter();
   const dispatch = useDispatch();
   const form = useForm<UserLoginProps>({
@@ -41,18 +42,39 @@ export default function Login() {
       country_code: "",
     },
   });
+  const handleCheckCode = () => {
+    const pin = form.getValues("pin");
+    const phoneNumber = form.getValues("phone_number");
+    const countryCode = form.getValues("country_code");
+    console.log(pin, countryCode, phoneNumber);
+    if (pin && phoneNumber && !countryCode) {
+      setCodeError(true);
+    }
+  };
 
   const onSubmit = async (data: UserLoginProps) => {
-    console.log("Login data:", {...data, phone_number: Number(data.phone_number)});
+    const cCode = form.getValues("country_code");
+    console.log("Country code:", cCode);
+    if (!cCode) {
+      toast.error("❌ Country code is required");
+      return;
+    }
+    console.log("Login data:", {
+      ...data,
+      phone_number: Number(data.phone_number),
+    });
     try {
       setLoading(true);
-      const res = await clientApi.post(`/user/login/`, {...data, phone_number: Number(data.phone_number)});
+      const res = await clientApi.post(`/user/login/`, {
+        ...data,
+        phone_number: Number(data.phone_number),
+      });
 
       console.log(res);
       const token = res.data.token;
-        Cookies.set("auth_token", token, { expires: 7 });
-        localStorage.setItem("auth_token", token);
-        dispatch(setToken({ token}));
+      Cookies.set("auth_token", token, { expires: 7 });
+      localStorage.setItem("auth_token", token);
+      dispatch(setToken({ token }));
 
       if (res.data.status) {
         setLoading(false);
@@ -78,7 +100,7 @@ export default function Login() {
   return (
     <div className="min-h-screen bg-white flex ">
       {/* Left Side - Image */}
-      <div className="hidden lg:flex lg:w-1/2 bg-gradient-to-br from-blue-600 to-indigo-700 items-center justify-center">
+      {/* <div className="hidden lg:flex lg:w-1/2 bg-gradient-to-br from-blue-600 to-indigo-700 items-center justify-center">
         <div className="text-center w-full h-full text-white">
           <div className="w-full h-full">
             <img
@@ -88,11 +110,12 @@ export default function Login() {
             />
           </div>
         </div>
-      </div>
+      </div> */}
 
       {/* Right Side - Form */}
-      <div className="w-full lg:w-1/2 flex items-center justify-center p-6 sm:p-8 lg:p-12">
-        <div className="w-full max-w-md">
+      {/* <div className="w-full lg:w-1/2 flex items-center justify-center p-6 sm:p-8 lg:p-12"> */}
+      <div className="w-full lg:w-2/5 mx-auto flex items-center justify-center p-6 sm:p-8 lg:p-12">
+        <div className="w-full">
           <div className="mb-8">
             <h1 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-2">
               Welcome Back
@@ -112,15 +135,28 @@ export default function Login() {
                       <FormLabel>Phone number</FormLabel>
                       <FormControl>
                         <div className="text flex gap-2">
-                          <LoginCountrySelect form={form} />
-                          <Input
-                            className="h-11"
-                            placeholder="070*******25"
-                            {...field}
-                          />
+                          <div>
+                            <LoginCountrySelect
+                              setCodeError={setCodeError}
+                              codeError={codeError}
+                              form={form}
+                            />
+                            {codeError && (
+                              <p className="text-sm text-red-500">
+                                Code is required
+                              </p>
+                            )}
+                          </div>
+                          <div className="w-full">
+                            <Input
+                              className="h-11"
+                              placeholder="070*******25"
+                              {...field}
+                            />
+                            <FormMessage className="mt-2" />
+                          </div>
                         </div>
                       </FormControl>
-                      <FormMessage />
                     </FormItem>
                   )}
                 />
@@ -136,7 +172,8 @@ export default function Login() {
                       <FormLabel className="flext justify-between">
                         Password{" "}
                         <button
-                          onClick={() => {
+                          onClick={(e) => {
+                            e.preventDefault();
                             passwordType === "password"
                               ? setPasswordType("text")
                               : setPasswordType("password");
@@ -193,6 +230,7 @@ export default function Login() {
                 className="bg-[#3561D3] cursor-pointer hover:bg-[#3561D3] w-full h-14 "
                 type="submit"
                 disabled={loading}
+                onClick={handleCheckCode}
               >
                 {loading && <Loader className="animate-spin" />}
 

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Select,
   SelectContent,
@@ -14,9 +14,17 @@ import CountryFlag from "@/lib/helper";
 import { z } from "zod";
 import { userSchemaProps } from "./IndividualRegistration";
 
-const IndividualCountrySelect = ({form}:{form: UseFormReturn<userSchemaProps>}) => {
+const IndividualCountrySelect = ({form, codeError, setCodeError}:{form: UseFormReturn<userSchemaProps>, codeError:boolean, setCodeError: React.Dispatch<React.SetStateAction<boolean>>}) => {
       const [selected, setSelected] = useState<string>("");
       const { countries } = useFormHook();
+
+        const code = form.getValues("country_code");
+  useEffect(() => {
+      if(code){
+        setCodeError(false);
+      }
+      
+    }, [code, setCodeError]);
     
   return (
    <div className="space-y-2">
@@ -31,7 +39,7 @@ const IndividualCountrySelect = ({form}:{form: UseFormReturn<userSchemaProps>}) 
         }
       }}
       >
-        <SelectTrigger className="w-[130px] py-5">
+        <SelectTrigger className={`"w-[130px] py-5 ${codeError ? " border border-red-500" : ""}`}>
           {!selected && (
             <SelectValue className="text-xs" placeholder="country code" />
           )}

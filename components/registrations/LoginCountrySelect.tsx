@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Select,
   SelectContent,
@@ -13,15 +13,27 @@ import { UseFormReturn } from "react-hook-form";
 import CountryFlag from "@/lib/helper";
 import { z } from "zod";
 import { UserLoginProps } from "./Login";
-const LoginCountrySelect = ({form}: {form: UseFormReturn<UserLoginProps>}) => {
+const LoginCountrySelect = ({form, codeError, setCodeError}: {form: UseFormReturn<UserLoginProps>, codeError:boolean, setCodeError: React.Dispatch<React.SetStateAction<boolean>>}) => {
       const [selected, setSelected] = useState<string>("");
   const { countries } = useFormHook();
+
+
+
+
+  const code = form.getValues("country_code");
+  useEffect(() => {
+      if(code){
+        setCodeError(false);
+      }
+      
+    }, [code, setCodeError]);
+  
 
   return (
     <div className="space-y-2">
       <Select 
       value={selected} 
-    //   onValueChange={setSelected}
+          //   onValueChange={setSelected}
      onValueChange={(value) => {
         const selectedValue = countries.find((c) => c.countryCode === value);
         setSelected(value);
@@ -30,7 +42,7 @@ const LoginCountrySelect = ({form}: {form: UseFormReturn<UserLoginProps>}) => {
         }
       }}
       >
-        <SelectTrigger className="w-[130px] py-5">
+        <SelectTrigger className={`"w-[130px] py-5 ${codeError ? " border border-red-500" : ""}`}>
           {!selected && (
             <SelectValue className="text-xs" placeholder="country code" />
           )}
@@ -52,7 +64,7 @@ const LoginCountrySelect = ({form}: {form: UseFormReturn<UserLoginProps>}) => {
         <SelectContent>
           {countries?.map((country) => (
             <SelectItem key={country.countryCode} value={country.countryCode}>
-              <button onClick={() => form.setValue("country_code", country.phonecode)} className="flex items-center gap-2">
+              <button onClick={() =>form.setValue("country_code", country.phonecode)} className="flex items-center gap-2">
                 <CountryFlag code={country.countryCode} size="w-5 h-5" />
                 <span>{country.name}</span>
                 <span className="text-muted-foreground">

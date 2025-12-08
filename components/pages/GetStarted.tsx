@@ -307,6 +307,7 @@ import Link from 'next/link';
 import one from '../../assets/images/slide 1.jpeg';
 import two from '../../assets/images/slide 2.jpeg';
 import three from '../../assets/images/slide 3.jpeg';
+import cities_logo from '../../assets/images/cities_logo.jpeg';
 import playstore from '../../assets/images/play_store.webp';
 import applestore from '../../assets/images/apple_store.webp';
 import 'animate.css';
@@ -368,74 +369,7 @@ useEffect(() => {
       {/* Desktop Layout */}
       <div className="hidden md:block">
         <div className="grid grid-cols-2 gap-0 min-h-screen">
-          {/* Left Column */}
-          <div className="flex flex-col justify-between pl-12 pr-4 md:pl-16 md:pr-6 py-12 lg:py-16">
-            <div>
-              <h2 className="text-2xl lg:text-3xl font-bold mb-2">C Cities App</h2>
-              <p className="text-sm">AI social network for counties</p>
-            </div>
-
-            <div className="space-y-12">
-              <div>
-                <h1 className="text-4xl font-bold text-gray-100 mb-8 leading-tight">
-                  {/* Connect <span className="text-blue-600">Locally</span> */}
-                  Next Gen AI powered Social Network App for over <span
-         className={` text-slate-500 inline-block text-outline-white-sm ${
-          animate ? "animate__animated animate__slideInUp" : ""
-        }`}
-      >
-        {textArray[currentIndex]}
-      </span> in different communities
-                </h1>
-                <p className="text-gray-200 text-lg lg:text-xl max-w-md leading-relaxed">
-                  Connect locally, engage meaningfully, and discover your community. Share what matters and build lasting relationships.
-                </p>
-              </div>
-
-                                    <div className="space-y-3 max-w-md">
-                <Link href='/register/account-type' className="w-full bg-white hover:bg-gray-100 text-slate-900 rounded-full py-2 text-lg font-bold transition-all hover:shadow-lg flex items-center justify-center gap-2">
-                  <ArrowLeft className="w-5 h-5" />
-                  Get started
-                </Link>
-
-                <Link
-                  href="/login"
-                  className="w-full bg-transparent border-2 border-white text-white hover:bg-white/10 rounded-full py-2 text-lg font-semibold transition-all flex items-center justify-center gap-2"
-                >
-                  I already have an account
-                  <ArrowRight className="w-4 h-4" />
-                </Link>
-              </div>
-
-            <div className="flex gap-4">
-                  <a 
-                    href="#"
-                  >
-                    <div className='w-46 h-12'>
-                    <img src={applestore.src} alt="Download on the App Store" className='w-full h-full rounded' />
-                    </div>
-                  </a>
-                  
-                  <a 
-                    href="#"
-                  >
-                    <div className='w-46 h-12'>
-                  <img src={playstore.src} alt="Get it on Google Play" className='w-full h-full rounded' />
-                    </div>
-                  </a>
-                </div>
-            </div>
-
-            <div className="flex items-center justify-start gap-4 text-slate-500 text-sm mt-4">
-              <a href="#" className="hover:text-slate-800 transition-colors">Privacy</a>
-              <span>•</span>
-              <a href="#" className="hover:text-slate-800 transition-colors">Terms</a>
-              <span>•</span>
-              <a href="#" className="hover:text-slate-800 transition-colors">Contact</a>
-            </div>
-          </div>
-
-          {/* Right Column with Transparent Image */}
+          {/* Left Column with Transparent Image */}
           {/* <div className="relative h-screen overflow-hidden">
               <img
                 src={userImage.src}
@@ -495,7 +429,7 @@ useEffect(() => {
                       alt={slide.title}
                       className="w-full h-full object-cover"
                     />
-                    <div className="absolute inset-0 bg-gradient-to-l from-transparent via-transparent to-slate-900/80" />
+                    <div className="absolute inset-0 bg-gradient-to-r from-transparent via-transparent to-slate-900/80" />
                   </div>
                 );
               })}
@@ -535,6 +469,80 @@ useEffect(() => {
             </div>
             </div>
         </div>
+
+               {/* Right Column */}
+          <div className="flex flex-col justify-between pl-12 pr-4 md:pl-16 md:pr-6 py-12 lg:py-16 text-center">
+            <div className='flex items-center gap-4'>
+              {/* <h2 className="text-2xl lg:text-3xl font-bold mb-2">C Cities Web App</h2> */}
+              <div className='w-12 h-12 rounded-full overflow-hidden'>
+               <img
+                      src={cities_logo.src}
+                      alt="Cities Logo"
+                      className="w-full h-full object-cover object-center"
+                    />
+              </div>
+                    <h2 className="text-2xl lg:text-3xl font-bold mb-2">Cities Web App</h2>
+            </div>
+
+            <div className="space-y-12">
+              <div>
+                <h1 className="text-4xl font-bold text-gray-100 mb-8 leading-tight">
+                  {/* Connect <span className="text-blue-600">Locally</span> */}
+                  Next Gen AI Social Network App powering over <span
+         className={` text-blue-500 inline-block text-outline-white-sm ${
+          animate ? "animate__animated animate__slideInUp" : ""
+        }`}
+      >
+        {textArray[currentIndex]}
+      </span>
+                </h1>
+                <p className="text-gray-200 text-lg lg:text-xl leading-relaxed">
+                  Connect locally, engage meaningfully, and discover your community. Share what matters and build lasting relationships.
+                </p>
+              </div>
+
+                                    <div className="space-y-3 max-w-md mx-auto mt-20">
+                <Link href='/register/account-type' className="w-full bg-white hover:bg-gray-100 text-slate-900 rounded-full py-2 text-lg font-bold transition-all hover:shadow-lg flex items-center justify-center gap-2">
+                  <ArrowLeft className="w-5 h-5" />
+                  Get started
+                </Link>
+
+                <Link
+                  href="/login"
+                  className="w-full bg-transparent border-2 border-white text-white hover:bg-white/10 rounded-full py-2 text-lg font-semibold transition-all flex items-center justify-center gap-2"
+                >
+                  I already have an account
+                  <ArrowRight className="w-4 h-4" />
+                </Link>
+              </div>
+
+            <div className="flex justify-center gap-4 mt-8">
+                  <a 
+                    href="#"
+                  >
+                    <div className='w-46 h-12'>
+                    <img src={applestore.src} alt="Download on the App Store" className='w-full h-full rounded' />
+                    </div>
+                  </a>
+                  
+                  <a 
+                    href="#"
+                  >
+                    <div className='w-46 h-12'>
+                  <img src={playstore.src} alt="Get it on Google Play" className='w-full h-full rounded' />
+                    </div>
+                  </a>
+                </div>
+            </div>
+
+            <div className="flex items-center justify-center gap-4 text-slate-500 text-sm mt-4">
+              <a href="#" className="hover:text-slate-800 transition-colors">Privacy</a>
+              <span>•</span>
+              <a href="#" className="hover:text-slate-800 transition-colors">Terms</a>
+              <span>•</span>
+              <a href="#" className="hover:text-slate-800 transition-colors">Contact</a>
+            </div>
+          </div>
         </div>
       </div>
 
@@ -542,10 +550,21 @@ useEffect(() => {
       <div className="md:hidden overflow-x-hidden flex flex-col min-h-screen">
         <div className="flex-1 flex flex-col px-6 py-8">
           {/* Header */}
-          <div className="mb-8">
-            <h2 className="text-2xl font-bold mb-1">C Cities App</h2>
+          {/* <div className="mb-8">
+            <h2 className="text-2xl font-bold mb-1">C Cities Web App</h2>
             <p className="text-slate-400 text-sm">AI social network for counties</p>
-          </div>
+          </div> */}
+
+          <div className='flex items-center gap-2 mb-8'>
+              <div className='w-10 h-10 rounded-full overflow-hidden'>
+               <img
+                      src={cities_logo.src}
+                      alt="Cities Logo"
+                      className="w-full h-full object-cover object-center"
+                    />
+              </div>
+                    <h2 className="text-2xl font-bold mb-2">Cities Web App</h2>
+            </div>
 
           {/* Image Section */}
          {/* <img
@@ -595,12 +614,12 @@ useEffect(() => {
                           </div>
                         </div>
 
-                        <div>
+                        {/* <div>
                           <h3 className="text-white text-3xl font-bold mb-4">{slide.title}</h3>
                           <p className="text-blue-100 text-sm max-w-xs">
                             Connect with people in your area and discover local events and communities.
                           </p>
-                        </div>
+                        </div> */}
                       </div>
                     </div>
                   </div>
@@ -647,20 +666,20 @@ useEffect(() => {
           <div className="flex-1 space-y-8 mt-4">
             <div>
               <h1 className="text-3xl font-bold text-gray-100 mb-4">
-                Next Gen AI powered Social Network App for over <span
-         className={` text-slate-500 inline-block text-outline-white-sm ${
+                Next Gen AI Social Network App powering over <span
+         className={` text-blue-500 inline-block text-outline-white-sm ${
           animate ? "animate__animated animate__slideInUp" : ""
         }`}
       >
         {textArray[currentIndex]}
-      </span> in different communities
+      </span>
               </h1>
               <p className="text-gray-200 text-lg">
                  Connect locally, engage meaningfully, and discover your community. Share what matters and build lasting relationships.
               </p>
             </div>
 
-                                    <div className="space-y-3 max-w-md">
+                                    <div className="space-y-3 max-w-md flex flex-col items-center justify-center w-full">
                 <Link href='/register/account-type' className="w-full bg-white hover:bg-gray-100 text-slate-900 rounded-full py-2 text-lg font-bold transition-all hover:shadow-lg flex items-center justify-center gap-2">
                   <ArrowLeft className="w-5 h-5" />
                   Get started
@@ -695,7 +714,7 @@ useEffect(() => {
           </div>
 
           {/* Footer Links */}
-          <div className="mt-12 pt-6 border-t border-slate-200">
+          <div className="mt-12 pt-6 border-t border-slate-600">
             <div className="flex items-center justify-center gap-4 text-slate-500 text-sm">
               <a href="#" className="hover:text-slate-800 transition-colors">Privacy</a>
               <span>•</span>

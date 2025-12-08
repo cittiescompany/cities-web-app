@@ -45,7 +45,7 @@ const router = useRouter();
           </div>
 
           {/* Business Account Card */}
-          <div className="bg-white rounded-2xl shadow-lg p-8 hover:shadow-xl transition-shadow">
+          <div className="bg-white rounded-2xl shadow-lg p-8 hover:shadow-xl transition-shadow opacity-50">
             <div className="flex justify-center mb-6">
               <div className="bg-indigo-100 p-4 rounded-full">
                 <Building2 className="w-8 h-8 text-indigo-600" />
@@ -59,8 +59,9 @@ const router = useRouter();
               manage your team and operations.
             </p>
             <Button
+              disabled
               onClick={() => router.push("/register/business")}
-              className="w-full bg-indigo-600 hover:bg-indigo-700 text-white py-6 text-lg rounded-full"
+              className="w-full bg-indigo-600 hover:bg-indigo-700 text-white py-6 text-lg rounded-full disabled:opacity-50 disabled:cursor-not-allowed"
             >
               Create Business Account
             </Button>
