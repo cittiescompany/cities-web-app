@@ -46,7 +46,7 @@ export const MemberCard: React.FC<MemberCardProps> = ({
     }
 
       const goToProfile = () => {
-    router.push(`/n/profile/${unique_id}`);
+    router.push(`/n/profile?id=${unique_id}`);
   }
   return (
     <div className="bg-white rounded-lg shadow-sm p-4 border border-gray-200 hover:shadow-md transition-shadow">

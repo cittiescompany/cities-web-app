@@ -6,7 +6,7 @@ import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 // import { trpc } from "@/lib/trpc";
 import { Search, Eye, Heart, UserPlus, UserCheck } from "lucide-react";
-import { useParams, useRouter, useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 // import { useLocation } from "wouter";
 
 type EngagementType = "views" | "likes";
@@ -20,11 +20,10 @@ interface EngagementUser {
 
 export default function PostEngagement() {
     
-      const params = useParams();
       const searchParams = useSearchParams();
       const router = useRouter();
       // Extract the values
-      const id = params.id;
+      const id = searchParams.get("id");
       const type = searchParams.get("type");
 //   const { user } = useAuth();
   const [engagementType, setEngagementType] = useState<EngagementType | string>(type || "likes");

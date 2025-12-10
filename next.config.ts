@@ -1,7 +1,10 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+  output: 'export',  // Enables static export
+  trailingSlash: true,  // Optional: Adds trailing slashes for better static routing
   images: {
+    unoptimized: true,
     remotePatterns: [
       {
         protocol: "https",
