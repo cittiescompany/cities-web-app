@@ -68,8 +68,8 @@ interface PaymentFlowProps {
   onSuccess?: () => void;
 }
 
-export function PaymentFlow({ onClose, onSuccess }: PaymentFlowProps) {
-  const { payment, updatePayment, nextStep, prevStep, resetPayment } =
+export function PaymentFlow({ onClose: _onClose, onSuccess: _onSuccess }: PaymentFlowProps) {
+  const { payment, updatePayment, nextStep, prevStep } =
     usePayment();
   const [copied, setCopied] = useState(false);
 
@@ -91,11 +91,6 @@ export function PaymentFlow({ onClose, onSuccess }: PaymentFlowProps) {
   //       return "Payment";
   //   }
   // };
-
-  const getStepCount = () => {
-    if (payment.type === "inbound") return 2;
-    return 3;
-  };
 
   const handleCopy = () => {
     navigator.clipboard.writeText("0040012023");
@@ -540,4 +535,6 @@ export function PaymentFlow({ onClose, onSuccess }: PaymentFlowProps) {
       }
     }
   };
+
+  return <div>{renderStep()}</div>;
 }

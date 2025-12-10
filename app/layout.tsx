@@ -4,7 +4,6 @@ import type { Metadata } from "next";
 import "./globals.css";
 import { ToastProvider } from "@/providers/ToastProvider";
 import ReduxProvider from "@/providers/ReduxProvider";
-import RedirectHandler from "@/components/RedirectHandler"; // Import the client-side wrapper
 
 // const geistSans = Geist({
 //   variable: "--font-geist-sans",
@@ -32,7 +31,7 @@ export default function RootLayout({
         // className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <ReduxProvider>
-          <RedirectHandler>{children}</RedirectHandler>
+          {children}
           <ToastProvider />
         </ReduxProvider>
       </body>

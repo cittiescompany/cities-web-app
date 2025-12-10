@@ -11,6 +11,15 @@ const compat = new FlatCompat({
 
 const eslintConfig = [
   ...compat.extends("next/core-web-vitals", "next/typescript"),
+  // Add this object to override/disable rules globally
+  {
+    rules: {
+      'react/no-unescaped-entities': 'off', // Example: Disable unescaped entities in JSX
+      '@next/next/no-img-element': 'off',   // Example: Allow <img> elements
+      // Add more here, e.g.:
+      // '@next/next/no-sync-scripts': 'off',
+    },
+  },
   {
     ignores: [
       "node_modules/**",

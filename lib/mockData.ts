@@ -1,8 +1,6 @@
 import {
   Product,
   Community,
-  Seller,
-  CommunityCard,
   LocationView,
 } from "../types/type-props";
 
