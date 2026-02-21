@@ -36,6 +36,8 @@ import { PostCardSkeleton, PostCardSkeletonNoMedia } from "@/lib/skeleton";
 import { useRouter } from "next/navigation";
 import { useFollowFriendMutation, useGetOtherUser, useGetOtherUserCommunities, useGetOtherUserMedia, useGetOtherUserPosts, } from "@/apis/userMutation";
 import { toast } from "react-toastify";
+import { useGetUserAccountDetails } from "@/apis/utility";
+import PaymentModal from "../PaymentModal";
 
 // Profile Header Skeleton Component
 const ProfileHeaderSkeleton = () => (
@@ -89,15 +91,18 @@ const ProfileHeaderSkeleton = () => (
 
 export function OtherUserProfile({ slug }: { slug: string }) {
   const [searchQuery, setSearchQuery] = useState("");
+  const [isOpen, setIsOpen] = useState(false);
   const { handlePostLikes, handleRepost} = usePostHook();
   const router = useRouter();
   const {data:user, isLoading} = useGetOtherUser(slug)
+  const {data:userAccount, isLoading:isLoadingUserAccount} = useGetUserAccountDetails(slug)
   const {data, isLoading:isGettingUserPosts} = useGetOtherUserPosts(slug)
   const {data:mediaData, isLoading:isGettingUserMedia} = useGetOtherUserMedia(slug)
   const {data:communityData, isLoading:isGettingUserCommunities} = useGetOtherUserCommunities(slug)
   const {mutateAsync:followFriend, isPending} = useFollowFriendMutation()
   const posts = data?.data || []
   console.log({otherUser:user})
+
   
   const filteredCommunities = communityData ? communityData.filter((community) =>
     community.name.toLowerCase().includes(searchQuery.toLowerCase())
@@ -119,6 +124,20 @@ try {
 } catch (error) {
   toast.error(error.response.message || "There is an error following this user, please try again.");
 }
+  }
+
+
+  const handleOpenModal = () => {
+    if(isLoadingUserAccount){
+      toast.error("User account details are still loading. Please wait a moment and try again.");
+      return;
+    }
+
+    if (!userAccount) {
+      toast.error("Unable to retrieve user account details. Please try again later.");
+      return;
+    }
+    setIsOpen(true);
   }
 
   return (
@@ -215,7 +234,8 @@ try {
             </Button>
             <Button
               variant="outline"
-              className="rounded-full px-6 py-2"
+              className="rounded-full px-6 py-2 cursor-pointer"
+              onClick={handleOpenModal}
             >
               <DollarSign className="w-5 h-5 mr-1" />
               Pay
@@ -340,6 +360,8 @@ try {
           )}
         </div>
       </div>
+
+      <PaymentModal userAccount={userAccount} isOpen={isOpen} setIsOpen={setIsOpen} />
     </div>
   );
 }

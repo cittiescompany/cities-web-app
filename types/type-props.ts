@@ -372,3 +372,32 @@ export interface CommunityProps {
   };
 }
 
+
+
+export interface PurchasePayload {
+  vertical: string;
+  disco: string;
+  phone: string;
+  meter: string;
+  narration?: string;
+  amount: number;
+  vendType: string;
+  name: string;
+  email: string;
+  orderId?: string;
+  paymentType: string;
+  pin: string;
+  tariffClass?: string; 
+}
+
+
+export interface TransferPayload {
+  bankCode: string;
+  accountNumber: string;
+  amount: number;
+  narration: string;
+  accountName: string;
+  bankName: string;
+  pin: string;
+}
+

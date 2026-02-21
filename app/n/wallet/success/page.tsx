@@ -1,4 +1,4 @@
-import TransferSuccess from '@/components/wallets/TransferSuccess'
+import TransferSuccess from '@/components/wallet/TransferSuccess'
 import React from 'react'
 
 const SuccessPage = () => {

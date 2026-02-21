@@ -1,4 +1,4 @@
-import Airtime from '@/components/wallets/Airtime'
+import Airtime from '@/components/wallet/Airtime'
 import React from 'react'
 
 const AirtimePage = () => {

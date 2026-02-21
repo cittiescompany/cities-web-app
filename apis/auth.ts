@@ -24,6 +24,8 @@ export const useUpdateUserMutation = () => {
     }
   });
 };
+
+
 // export const useUpdateSocialLinksMutation = () => {
 //   const queryClient=useQueryClient()
 //   return useMutation({
@@ -143,6 +145,44 @@ export const useGetProfile = () => {
     staleTime: 5 * 60 * 1000,
   });
 };
+
+// Create Wallet
+export const useCreateWalletMutation = () => {
+   const queryClient=useQueryClient()
+  return useMutation({
+    mutationFn: async(payload: {bvn:string, nin:string}) => {
+     const response = await clientApi.patch('/user', payload)
+     return response.data
+    },
+    onSuccess:()=>{
+      queryClient.invalidateQueries({queryKey: ["profile"]})
+      queryClient.invalidateQueries({queryKey: ["user-account"]})
+    }
+  });
+};
+
+
+// Get User wallet balance
+export const useGetUserWalletBalance = () => {
+  return useQuery({
+    queryKey: ["wallet-balance"],
+    queryFn: async () => {
+      const response = await clientApi.get("/payment/wallet_balance");
+   return response?.data?.data
+    },
+  });
+};
+export const useGetUserAccount = () => {
+  return useQuery({
+    queryKey: ["user-account"],
+    queryFn: async () => {
+      const response = await clientApi.get("/payment/generate_reserve_account");
+   return response?.data
+    },
+  });
+};
+
+
 export const useGetAllCreators = () => {
   return useQuery({
     queryKey: ["creators"],
@@ -200,17 +240,17 @@ onSuccess:()=>{
 }
 
 
-export const useCreateWalletMutation = () => {
-  const queryClient=useQueryClient()
-  return useMutation({
-    mutationFn: (payload) => {
-     return clientApi.post("/users/me/create-wallet", payload)
-    },
-onSuccess:()=>{
-  queryClient.invalidateQueries({queryKey: ["profile"]})
-}
-  });
-}
+// export const useCreateWalletMutation = () => {
+//   const queryClient=useQueryClient()
+//   return useMutation({
+//     mutationFn: (payload) => {
+//      return clientApi.post("/users/me/create-wallet", payload)
+//     },
+// onSuccess:()=>{
+//   queryClient.invalidateQueries({queryKey: ["profile"]})
+// }
+//   });
+// }
 
 export const useFundWalletMutation = () => {
   const queryClient=useQueryClient()

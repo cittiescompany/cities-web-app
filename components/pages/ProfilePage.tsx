@@ -382,10 +382,6 @@ export function ProfilePage() {
               Share
             </Button>
             <Button variant="outline" className="rounded-full px-6 py-2">
-              <DollarSign className="w-5 h-5 mr-1" />
-              Pay
-            </Button>
-            <Button variant="outline" className="rounded-full px-6 py-2">
               <Ban className="w-5 h-5 mr-1" />
               Block
             </Button>

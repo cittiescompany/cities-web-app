@@ -1,4 +1,4 @@
-import Transfer from '@/components/wallets/Transfer'
+import Transfer from '@/components/wallet/Transfer'
 import React from 'react'
 
 const TransferPage = () => {

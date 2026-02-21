@@ -1,4 +1,4 @@
-import InboundTransfer from '@/components/wallets/InboundTransfer'
+import InboundTransfer from '@/components/wallet/InboundTransfer'
 import React from 'react'
 
 const InboundPage = () => {

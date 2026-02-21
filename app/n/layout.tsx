@@ -4,7 +4,7 @@ import BottomNav from "@/components/pages/BottomNav";
 import Header from "@/components/pages/Header";
 import SideNavbar from "@/components/pages/SideNavbar";
 import RightSidebar from "@/components/RightSidebar";
-import { PaymentProvider } from "@/components/wallets/PaymentContext";
+import { PaymentProvider } from "@/components/wallet/PaymentContext";
 import React from "react";
 import { useRequireAuth } from "@/hooks/useAuth";
 

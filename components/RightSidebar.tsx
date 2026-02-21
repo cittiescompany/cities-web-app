@@ -141,9 +141,9 @@ const RightSidebar = () => {
     ) : displayCommunities.length > 0 ? (
       // Actual content when loaded
       <>
-        {displayCommunities.map((community) => (
+        {displayCommunities.map((community, i) => (
           <div
-            key={community.unique_id}
+            key={i}
             className="flex items-center justify-between"
           >
             <div className="flex items-center gap-3">

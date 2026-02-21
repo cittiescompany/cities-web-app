@@ -21,7 +21,7 @@ const SideNavbar = () => {
     { label: "Home", icon: Home, href: "/n" },
     { label: "Community", icon: User, href: "/n/communities" },
     { label: "Market", icon: ShoppingBag, href: "/n/markets" },
-    { label: "Wallet", icon: Wallet, href: "/n/wallets" },
+    { label: "Wallet", icon: Wallet, href: "/n/wallet" },
     { label: "Rewards", icon: Gift, href: "/n/rewards" },
     // { label: "Rewards", icon: Gift, href: "/n/rewards" },
   ];

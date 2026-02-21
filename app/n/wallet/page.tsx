@@ -1,4 +1,4 @@
-import Dashboard from '@/components/wallets/Dashboard'
+import Dashboard from '@/components/wallet/Dashboard'
 import React from 'react'
 
 const WalletMainPage = () => {
