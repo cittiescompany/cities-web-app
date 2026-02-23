@@ -484,7 +484,7 @@ export default function OutboundTransfer() {
         bankCode: selectedBank.bankCode,
         accountNumber: digits,
       }) as VerificationResponse;
-
+console.log("Verification response:", response);
       if ("accountName" in response && response.accountName) {
         // Success
         setAccountName(response.accountName);
@@ -493,7 +493,7 @@ export default function OutboundTransfer() {
       } else {
         // Error response
         setVerificationStatus("error");
-        setVerificationError(response.message || "Account verification failed.");
+        setVerificationError("Account verification failed.");
       }
     } catch (error) {
       setVerificationStatus("error");
@@ -573,7 +573,8 @@ export default function OutboundTransfer() {
         setPin("");
       },
       onError: (err) => {
-        toast.error(err?.response?.message||err?.response?.data?.message || "There was an issue with your transfer. Please try again.");
+        // toast.error(err?.response?.message||err?.response?.data?.message || "There was an issue with your transfer. Please try again.");
+        toast.error("There is an issue with your transfer. Please try again.");
       },
     });
   };

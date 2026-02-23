@@ -120,7 +120,8 @@ const PaymentModal = ({ isOpen, setIsOpen, userAccount }: PaymentModalProps) => 
       },
       onError: (err) => {
         console.log({err});
-        toast.error(err?.response?.data?.message || "There was an issue with your transfer. Please try again.");
+        // toast.error(err?.response?.data?.message || "There was an issue with your transfer. Please try again.");
+        toast.error("There is an issue with your transfer. Please try again.");
       },
     });
   };

@@ -33,7 +33,7 @@ export const useAuth = () => {
     useEffect(() => {
       if (!isLoading && user) {
         // Check if current page is an auth page
-        const isAuthPage = pathname === '/login' || pathname.includes('/register') || pathname === 'forgot-password' || pathname === '/finish-setup';
+        const isAuthPage = pathname === '/login' || pathname.includes('/register') || pathname === '/forgot-password' || pathname === '/finish-setup';
         
         if (isAuthPage) {
           // Get the redirect URL from query params or localStorage

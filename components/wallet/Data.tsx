@@ -236,7 +236,8 @@ export default function Data() {
         setErrors({});
       },
       onError: (err) => {
-        toast.error(err?.response?.message||err?.response?.data?.message || "There was an issue with your purchase. Please try again.");
+        // toast.error(err?.response?.message||err?.response?.data?.message || "There was an issue with your purchase. Please try again.");
+        toast.error("There is an issue with your purchase. Please try again.");
       },
     });
   };

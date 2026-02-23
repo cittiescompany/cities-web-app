@@ -1,11 +1,29 @@
 // src/api/index.js
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import clientApi from "./clientApi";
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import { ProfileUpdateProps } from "@/components/dialogs/ProfileUpdateDialog";
 const baseUrl = process.env.NEXT_PUBLIC_BASE_URL
  const token = typeof window !== "undefined" ? localStorage.getItem("auth_token") : null;
  const bearerToken =`Bearer ${token}`
+
+
+ interface ErrorResponse {
+  status: boolean;
+  message: string;
+  data: null;
+}
+
+interface WalletBalanceResponse {
+  accountName: string;
+  accountNumber: string;
+  balance: string;
+  bankCode: string;
+  bankName: string;
+  escrowBalance: string;
+  pin: number;
+  tier: number;
+}
 
 // Registration
 export const useIndividualSignupMutation = () => {
@@ -83,6 +101,9 @@ export const useUpdateUserMutation = () => {
 //     mutationFn: (payload) => clientApi.post("/users/me/verify-OTP", payload),
 //   });
 // };
+
+
+
 
 
 export const useChangeProfileImageMutation = () => {
@@ -164,7 +185,10 @@ export const useCreateWalletMutation = () => {
 
 // Get User wallet balance
 export const useGetUserWalletBalance = () => {
-  return useQuery({
+  return useQuery<
+    WalletBalanceResponse,
+    AxiosError<ErrorResponse>
+  >({
     queryKey: ["wallet-balance"],
     queryFn: async () => {
       const response = await clientApi.get("/payment/wallet_balance");
@@ -172,6 +196,7 @@ export const useGetUserWalletBalance = () => {
     },
   });
 };
+
 export const useGetUserAccount = () => {
   return useQuery({
     queryKey: ["user-account"],

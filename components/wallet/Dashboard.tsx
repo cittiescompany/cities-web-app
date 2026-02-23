@@ -152,6 +152,8 @@ export default function Dashboard() {
     isPending: transactionsLoading,
   } = useGetTransactions();
 
+  
+
   // ── Fetch transactions whenever page or dates change ─────────────────────
   useEffect(() => {
     if (walletData && !walletIsLoading) {
@@ -217,6 +219,7 @@ export default function Dashboard() {
   }
 
   // ── No Wallet State ───────────────────────────────────────────────────────
+  // if (walletIsError && walletError?.response?.data?.message === "Account not found") {
   if (walletIsError && walletError?.response?.data?.message === "Account not found") {
     return (
       <div className="min-h-screen w-full mx-auto">
