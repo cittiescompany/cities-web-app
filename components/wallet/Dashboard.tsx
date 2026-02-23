@@ -360,7 +360,6 @@ export default function Dashboard() {
             <span className="font-semibold">Data</span>
           </Button>
           <Button
-            onClick={() => handleNavigate("more")}
             className="h-24 w-full bg-white border-2 cursor-pointer border-gray-200 hover:border-blue-500 hover:bg-blue-50 text-gray-900 flex flex-col items-center justify-center gap-2 rounded-xl transition"
           >
             <MdDashboard size={40} className="text-gray-600" />
