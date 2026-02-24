@@ -194,7 +194,7 @@ export default function Airtime() {
 
     const payload: PurchasePayload = {
       vertical:  "VTU",
-      disco:     selectedProviderName,
+      disco:     selectedProviderName.toUpperCase(),
       meter:     normalisePhone(phoneNumber),
       phone:     normalisePhone(phoneNumber),
       narration: "Purchase airtime",
@@ -220,8 +220,8 @@ export default function Airtime() {
        setErrors({});
       },
       onError: (err) => {
-        //  toast.error(err?.response?.message||err?.response?.data?.message||"There is an issue with your purchase. Please try again.");
-         toast.error("There is an issue with your purchase. Please try again.");
+        toast.error(err?.response?.data?.message ||"There is an issue with your purchase. Please try again.");
+        //  toast.error("There is an issue with your purchase. Please try again.");
       }
     });
   }

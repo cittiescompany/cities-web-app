@@ -16,6 +16,7 @@ import { Button } from "./ui/button";
 import {
   Calendar,
   Eye,
+  EyeOff,
   FileText,
   Heart,
   MapPin,
@@ -29,16 +30,25 @@ import clientApi from "@/apis/clientApi";
 import { useDispatch } from "react-redux";
 import { setLoading, setUser } from "@/redux/userSlice";
 import Link from "next/link";
-import { useGetProfile } from "@/apis/auth";
+import { useGetProfile, useGetUserWalletBalance } from "@/apis/auth";
 import { useGetAllCommunities } from "@/apis/communityMutation";
 import { useJoinCommunityMutation } from '@/apis/communityMutation';
+import { formatCurrency } from "@/lib/utils";
 
 const RightSidebar = () => {
   const [communities, setCommunities] = useState(initialCommunities);
+  const [showBalance, setShowBalance] = useState(true);
   const { data, isLoading } = useGetProfile();
   const { data: realCommunities, isLoading: communitiesLoading } = useGetAllCommunities();
   const { mutateAsync: joinCommunity, isPending: joinPending } = useJoinCommunityMutation();
   const dispatch = useDispatch();
+
+    const {
+      data: walletData,
+      isLoading: walletIsLoading,
+      isError: walletIsError,
+      error: walletError,
+    } = useGetUserWalletBalance();
 
   console.log("Profile data:", data);
   console.log("Real communities:", realCommunities);
@@ -85,20 +95,31 @@ const RightSidebar = () => {
             </CardDescription>
           </CardHeader>
           <CardContent>
-            <div className="text-3xl font-bold mb-2">
+            {/* <div className="text-3xl font-bold mb-2">
               ₦{currentUser.balance.toLocaleString()}
-            </div>
+            </div> */}
+              <div className="flex items-center gap-3">
+                  <h3 className="text-4xl font-bold">
+                    {showBalance ? formatCurrency(walletData?.balance) : "••••••"}
+                  </h3>
+                  <button
+                    onClick={() => setShowBalance(!showBalance)}
+                    className="p-2 hover:bg-white/20 rounded-lg transition"
+                  >
+                    {showBalance ? <Eye size={20} /> : <EyeOff size={20} />}
+                  </button>
+                </div>
             <div className="text-sm text-primary-foreground/80 mb-4">
               +₦0.00 last 7 days
             </div>
             <div className="grid grid-cols-2 gap-2">
-              <Link className="w-full" href="/n/wallets/transfers">
+              <Link className="w-full" href="/n/wallet/outbound">
                 <Button className="w-full" variant="secondary" size="sm">
                   <Send className="w-4 h-4 mr-2" />
                   Transfer
                 </Button>
               </Link>
-              <Link className="w-full" href="/n/wallets/">
+              <Link className="w-full" href="/n/wallet/">
                 <Button className="w-full" variant="secondary" size="sm">
                   <Wallet className="w-4 h-4 mr-2" />
                   wallet

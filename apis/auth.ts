@@ -14,6 +14,14 @@ const baseUrl = process.env.NEXT_PUBLIC_BASE_URL
   data: null;
 }
 
+interface DataResponse {
+  status: number;
+  message: string;
+  data: {
+    message: string;
+  }
+}
+
 interface WalletBalanceResponse {
   accountName: string;
   accountNumber: string;
@@ -170,14 +178,15 @@ export const useGetProfile = () => {
 // Create Wallet
 export const useCreateWalletMutation = () => {
    const queryClient=useQueryClient()
-  return useMutation({
-    mutationFn: async(payload: {bvn:string, nin:string}) => {
+  return useMutation<DataResponse, AxiosError<ErrorResponse>, {bvn:string, nin:string}>({
+    mutationFn: async(payload) => {
      const response = await clientApi.patch('/user', payload)
      return response.data
     },
     onSuccess:()=>{
       queryClient.invalidateQueries({queryKey: ["profile"]})
       queryClient.invalidateQueries({queryKey: ["user-account"]})
+      queryClient.invalidateQueries({queryKey: ["wallet-balance"]})
     }
   });
 };
@@ -197,10 +206,9 @@ export const useGetUserWalletBalance = () => {
   });
 };
 
-export const useGetUserAccount = () => {
-  return useQuery({
-    queryKey: ["user-account"],
-    queryFn: async () => {
+export const useCreateUserAccount = () => {
+  return useMutation({
+    mutationFn: async () => {
       const response = await clientApi.get("/payment/generate_reserve_account");
    return response?.data
     },

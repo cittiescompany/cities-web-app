@@ -359,7 +359,7 @@ interface VerificationError {
   data: null;
 }
 
-type VerificationResponse = VerificationSuccess | VerificationError;
+export type VerificationResponse = VerificationSuccess | VerificationError;
 
 interface FormErrors {
   bank?: string;
@@ -573,8 +573,8 @@ console.log("Verification response:", response);
         setPin("");
       },
       onError: (err) => {
-        // toast.error(err?.response?.message||err?.response?.data?.message || "There was an issue with your transfer. Please try again.");
-        toast.error("There is an issue with your transfer. Please try again.");
+        toast.error(err?.response?.data?.message || "There is an issue with your transfer. Please try again.");
+        // toast.error("There is an issue with your transfer. Please try again.");
       },
     });
   };

@@ -209,7 +209,7 @@ export default function Data() {
     const payload: PurchasePayload = {
       tariffClass: selectedPlan.code,
       meter: normalisePhone(phoneNumber),
-      disco: selectedProviderName,
+      disco: selectedProviderName.toUpperCase(),
       phone: normalisePhone(phoneNumber),
       paymentType: "B2B",
       vendType: "PREPAID",
@@ -236,8 +236,8 @@ export default function Data() {
         setErrors({});
       },
       onError: (err) => {
-        // toast.error(err?.response?.message||err?.response?.data?.message || "There was an issue with your purchase. Please try again.");
-        toast.error("There is an issue with your purchase. Please try again.");
+        toast.error(err?.response?.data?.message || "There is an issue with your purchase. Please try again.");
+        // toast.error("There is an issue with your purchase. Please try again.");
       },
     });
   };

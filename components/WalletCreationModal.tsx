@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { Input } from "./ui/input";
-import { useCreateWalletMutation } from "@/apis/auth";
+import { useCreateUserAccount, useCreateWalletMutation } from "@/apis/auth";
 import { toast } from "react-toastify";
 
 
@@ -17,6 +17,7 @@ const WalletCreationModal = ({ cancel, setCancel }: WalletCreationModalProps) =>
   const [errors, setErrors] = useState({ bvn: "", nin: "" });
 
   const { mutateAsync: createWalletMutation, isPending } = useCreateWalletMutation();
+  const { mutateAsync: createUserAccountMutation, isPending: isCreatingUserAccount } = useCreateUserAccount();
 
   // Validate BVN (11 digits)
   const validateBvn = (value) => {
@@ -73,13 +74,14 @@ const WalletCreationModal = ({ cancel, setCancel }: WalletCreationModalProps) =>
 
     try {
       const res = await createWalletMutation({ bvn, nin });
+      await createUserAccountMutation()
       toast.success(res?.data?.message || "✅ Wallet created successfully!");
       setBvn("");
       setNin("");
       setCancel(false);
     } catch (err) {
       console.error(err.response.data.message);
-      toast.error(err?.response?.message||err?.response?.data?.message ||"Wallet creation failed. Please try again.");
+      toast.error(err?.response?.data?.message ||"Wallet creation failed. Please try again.");
     }
   };
 

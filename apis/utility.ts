@@ -1,9 +1,25 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import clientApi from "./clientApi";
 import { PurchasePayload, TransferPayload } from "@/types/type-props";
+import { AxiosError } from "axios";
+import { VerificationResponse } from "@/components/wallet/OutboundTransfer";
 
 // const baseUrl='https://lendnode.creditclan.com/gateway/buypower/buypower/buypower/'
 const additionalUrl='/payment/bills/'
+
+interface DataResponse {
+  status: number;
+  message: string;
+  data: {
+    message: string;
+  }
+}
+
+interface ErrorResponse {
+  status: boolean;
+  message: string;
+  data: null;
+}
 
 export const useCheckMeter = () => {
    return useMutation({
@@ -16,8 +32,8 @@ export const useCheckMeter = () => {
 };
 
 export const usePurchase = () => {
-   return useMutation({
-    mutationFn: async (payload:PurchasePayload) => {
+   return useMutation<DataResponse, AxiosError<ErrorResponse>, PurchasePayload>({
+    mutationFn: async (payload) => {
       return await clientApi.post(`${additionalUrl}create_order`,payload).then((res) => {
        return res.data;
       });
@@ -64,8 +80,8 @@ export const useGetBankLists = () => {
 };
 
 export const useVerifyAccount = () => {
-   return useMutation({
-    mutationFn: async (payload:{ bankCode: string, accountNumber: string,}) => {
+   return useMutation<VerificationResponse, AxiosError<ErrorResponse>, { bankCode: string, accountNumber: string,}>({
+    mutationFn: async (payload) => {
       return await clientApi.post("/payment/verify_account",payload).then((res) => {
        return res?.data?.data;
       });
@@ -77,8 +93,8 @@ export const useVerifyAccount = () => {
 };
 
 export const useMakeTransfer = () => {
-   return useMutation({
-    mutationFn: async (payload:TransferPayload) => {
+   return useMutation<DataResponse, AxiosError<ErrorResponse>, TransferPayload>({
+    mutationFn: async (payload) => {
       return await clientApi.post("/payment/transfer",payload).then((res) => {
        return res?.data;
       });
@@ -90,8 +106,8 @@ export const useMakeTransfer = () => {
 };
 export const useCreatePin = () => {
   const queryClient=useQueryClient()
-   return useMutation({
-    mutationFn: async (payload:{ pin:string, confirm_pin: string, }) => {
+   return useMutation<DataResponse, AxiosError<ErrorResponse>, { pin:string, confirm_pin: string, }>({
+    mutationFn: async (payload) => {
       return await clientApi.post("/payment/create_pin",payload).then((res) => {
        return res?.data?.data;
       });
