@@ -9,4 +9,8 @@ const PostEngagementPage = () => {
   )
 }
 
-export default PostEngagementPage
+export default PostEngagementPage;
+
+export async function generateStaticParams() {
+  return [{ slug: "1" }];
+}

@@ -5,18 +5,22 @@ interface PageProps {
   searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
 }
 const CommunitiesDetailsPage = async ({ params }: PageProps) => {
-const { slug } = await params;
-console.log(slug);
-// const matchedProduct = mockProducts.find(product => product.id === slug);
-// if (!matchedProduct) {
-//     return <div>Product not found</div>;
-//   }
+  const { slug } = await params;
+  console.log(slug);
+  // const matchedProduct = mockProducts.find(product => product.id === slug);
+  // if (!matchedProduct) {
+  //     return <div>Product not found</div>;
+  //   }
 
   return (
     <div>
-        <MainDetailsPage slug={slug} />
+      <MainDetailsPage slug={slug} />
     </div>
   )
 }
 
-export default CommunitiesDetailsPage
+export default CommunitiesDetailsPage;
+
+export async function generateStaticParams() {
+  return [{ slug: "1" }];
+}

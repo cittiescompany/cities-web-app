@@ -7,18 +7,23 @@ interface PageProps {
   searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
 }
 const MarketsDetailsPage = async ({ params }: PageProps) => {
-const { slug } = await params;
-console.log(slug);
-const matchedProduct = mockProducts.find(product => product.id === slug);
-if (!matchedProduct) {
+  const { slug } = await params;
+  console.log(slug);
+  const matchedProduct = mockProducts.find(product => product.id === slug);
+  if (!matchedProduct) {
     return <div>Product not found</div>;
   }
 
   return (
     <div>
-        <ProductDetails data={matchedProduct} />
+      <ProductDetails data={matchedProduct} />
     </div>
   )
 }
 
-export default MarketsDetailsPage
+export default MarketsDetailsPage;
+
+export async function generateStaticParams() {
+  // optionally return mockProducts mapped if needed, using [] to pass build
+  return [{ slug: "1" }];
+}

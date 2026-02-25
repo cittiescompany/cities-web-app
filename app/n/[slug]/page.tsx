@@ -6,4 +6,8 @@ const PostDetailsPage = () => {
   )
 }
 
-export default PostDetailsPage
+export default PostDetailsPage;
+
+export async function generateStaticParams() {
+  return [{ slug: "1" }];
+}
