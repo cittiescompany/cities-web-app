@@ -7,6 +7,7 @@ import { Input } from "@/components/ui/input";
 import { Loader2 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { TransferPayload } from "@/types/type-props";
+import TransferSuccessModal from "./wallet/TransferSuccessModal";
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -53,6 +54,7 @@ const PaymentModal = ({ isOpen, setIsOpen, userAccount }: PaymentModalProps) => 
   const [amount, setAmount] = useState("");
   const [narration, setNarration] = useState("");
   const [pin, setPin] = useState("");
+  const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false);
 
   // ── Validation state ───────────────────────────────────────────────────────
   const [errors, setErrors] = useState<FormErrors>({});
@@ -272,6 +274,8 @@ const PaymentModal = ({ isOpen, setIsOpen, userAccount }: PaymentModalProps) => 
           </div>
         </Card>
       </div>
+
+      <TransferSuccessModal isOpen={isSuccessModalOpen} onClose={() => setIsSuccessModalOpen(false)} data={{type:'transfer',recipient:userAccount.accountName,amount:Number(amount)}} />
     </div>
   );
 };

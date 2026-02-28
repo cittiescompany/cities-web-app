@@ -16,6 +16,7 @@ import { Spinner } from "../ui/spinner";
 import { useAuth } from "@/hooks/useAuth";
 import { toast } from "react-toastify";
 import { PurchasePayload } from "@/types/type-props";
+import TransferSuccessModal from "./TransferSuccessModal";
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -106,6 +107,7 @@ export default function Airtime() {
   const [touched,           setTouched]           = useState<TouchedFields>({
     provider: false, phoneNumber: false, amount: false, pin: false,
   });
+  const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false);
 
 
   const { user } = useAuth();
@@ -209,7 +211,8 @@ export default function Airtime() {
 
     await purchaseUtility(payload, {
       onSuccess: (res) => {
-       toast.success(res?.data?.message || "✅ Airtime purchased successfully!");
+      //  toast.success(res?.data?.message || "✅ Airtime purchased successfully!");
+      setIsSuccessModalOpen(true);
        setSelectedProvider("");
        setPhoneNumber("");
        setSelectedPlan(null);
@@ -271,7 +274,7 @@ export default function Airtime() {
   return (
     <div className="min-h-screen">
       {/* Header */}
-      <header className="bg-white border-b border-gray-200 sticky top-0 z-50">
+      <header className="bg-white border-b border-gray-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex items-center gap-4">
           <button
             onClick={() => router.back()}
@@ -503,6 +506,8 @@ export default function Airtime() {
           </Card>
         )}
       </main>
+
+      <TransferSuccessModal isOpen={isSuccessModalOpen} onClose={() => setIsSuccessModalOpen(false)} data={{type:'airtime',recipient:phoneNumber,amount:Number(selectedPlan)}} />
     </div>
   );
 }

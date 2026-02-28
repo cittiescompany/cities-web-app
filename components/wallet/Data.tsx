@@ -23,6 +23,7 @@ import { useAuth } from "@/hooks/useAuth";
 import { toast } from "react-toastify";
 import { Spinner } from "../ui/spinner";
 import { PurchasePayload } from "@/types/type-props";
+import TransferSuccessModal from "./TransferSuccessModal";
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -104,6 +105,7 @@ export default function Data() {
   const [phoneNumber, setPhoneNumber] = useState<string>("");
   const [selectedPlanCode, setSelectedPlanCode] = useState<string | null>(null);
   const [pin, setPin] = useState<string>("");
+  const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false);
 
   const [errors, setErrors] = useState<FormErrors>({});
   const [touched, setTouched] = useState<TouchedFields>({
@@ -222,7 +224,8 @@ export default function Data() {
 
     await purchaseUtility(payload, {
       onSuccess: (res) => {
-        toast.success(res?.data?.message || "✅ Data purchased successfully!");
+        // toast.success(res?.data?.message || "✅ Data purchased successfully!");
+        setIsSuccessModalOpen(true);
         setSelectedProvider("");
         setPhoneNumber("");
         setSelectedPlanCode(null);
@@ -249,7 +252,8 @@ export default function Data() {
   return (
     <div className="min-h-screen">
       {/* Header */}
-      <header className="bg-white border-b border-gray-200 sticky top-0 z-50">
+      {/* <header className="bg-white border-b border-gray-200 sticky top-0 z-50"> */}
+      <header className="bg-white border-b border-gray-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex items-center gap-4">
           <button
             onClick={() => router.back()}
@@ -446,6 +450,8 @@ export default function Data() {
             </div>
           </Card>
         )}
+
+         <TransferSuccessModal isOpen={isSuccessModalOpen} onClose={() => setIsSuccessModalOpen(false)} data={{type:'data',recipient:phoneNumber,amount:Number(selectedPlan)}} />
       </main>
     </div>
   );

@@ -337,6 +337,7 @@ import { useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
 import { toast } from "react-toastify";
 import { TransferPayload } from "@/types/type-props";
+import TransferSuccessModal from "./TransferSuccessModal";
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -393,6 +394,8 @@ export default function OutboundTransfer() {
   const [accountName, setAccountName] = useState("");
   const [verificationError, setVerificationError] = useState("");
 
+
+  const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false);
   const [open, setOpen] = useState(false);
 
   // ── Validation state ───────────────────────────────────────────────────────
@@ -563,7 +566,8 @@ console.log("Verification response:", response);
 
     await makeTransfer(payload, {
       onSuccess: (res) => {
-        toast.success(res?.data?.message || "✅ Transfer completed successfully!");
+        // toast.success(res?.data?.message || "✅ Transfer completed successfully!");
+        setIsSuccessModalOpen(true);
         setAccountName("");
         setVerificationStatus("idle");
         setSelectedBank(null);
@@ -593,7 +597,7 @@ console.log("Verification response:", response);
   return (
     <div className="min-h-screen">
       {/* Header */}
-      <header className="bg-white border-b border-gray-200 sticky top-0 z-50">
+      <header className="bg-white border-b border-gray-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex items-center gap-4">
           <button
             onClick={() => router.back()}
@@ -852,6 +856,8 @@ console.log("Verification response:", response);
             </div>
           </div>
         </Card>
+
+        <TransferSuccessModal isOpen={isSuccessModalOpen} onClose={() => setIsSuccessModalOpen(false)} data={{type:'transfer',recipient:accountName,amount:Number(amount)}} />
       </main>
     </div>
   );

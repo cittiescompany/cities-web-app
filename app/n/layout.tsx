@@ -7,6 +7,7 @@ import RightSidebar from "@/components/RightSidebar";
 import { PaymentProvider } from "@/components/wallet/PaymentContext";
 import React from "react";
 import { useRequireAuth } from "@/hooks/useAuth";
+import { ScrollArea } from "@/components/ui/scroll-area";
 
 const LoginedLayout = ({ children }: { children: React.ReactNode }) => {
   // const { user, isLoading } = useRequireAuth();
@@ -36,9 +37,12 @@ const LoginedLayout = ({ children }: { children: React.ReactNode }) => {
           </div>
           <div className="text w-full lg:w-4/5 lg:px-7 lg:my-10 lg:ml-[20%]">
          <div className="grid lg:grid-cols-3 gap-6 h-screen overflow-hidden">
-  <div className="lg:col-span-2 overflow-y-auto custom-scroll">
+          <ScrollArea className="lg:col-span-2 overflow-y-auto ">
+ {children}
+</ScrollArea>
+  {/* <div className="lg:col-span-2 overflow-y-auto custom-scroll">
     {children}
-  </div>
+  </div> */}
 
   <div className="overflow-y-auto custom-scroll">
     <RightSidebar />

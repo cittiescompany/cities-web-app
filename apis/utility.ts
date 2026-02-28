@@ -32,11 +32,15 @@ export const useCheckMeter = () => {
 };
 
 export const usePurchase = () => {
+  const queryClient=useQueryClient()
    return useMutation<DataResponse, AxiosError<ErrorResponse>, PurchasePayload>({
     mutationFn: async (payload) => {
       return await clientApi.post(`${additionalUrl}create_order`,payload).then((res) => {
        return res.data;
       });
+    },
+    onSuccess:()=>{
+     queryClient.invalidateQueries({queryKey: ["wallet-balance"]})
     },
     onError: (err) => {
       console.log(err);
@@ -93,11 +97,15 @@ export const useVerifyAccount = () => {
 };
 
 export const useMakeTransfer = () => {
+  const queryClient=useQueryClient()
    return useMutation<DataResponse, AxiosError<ErrorResponse>, TransferPayload>({
     mutationFn: async (payload) => {
       return await clientApi.post("/payment/transfer",payload).then((res) => {
        return res?.data;
       });
+    },
+    onSuccess:()=>{
+      queryClient.invalidateQueries({queryKey: ["wallet-balance"]})
     },
     onError: (err) => {
       console.log(err);
