@@ -33,7 +33,7 @@ import usePostHook from "@/hooks/use-post-hook";
 import { PostCard } from "../PostCard";
 import CommunityGrid from "../communities/CommunityGrid";
 import { PostCardSkeleton, PostCardSkeletonNoMedia } from "@/lib/skeleton";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useFollowFriendMutation, useGetOtherUser, useGetOtherUserCommunities, useGetOtherUserMedia, useGetOtherUserPosts, } from "@/apis/userMutation";
 import { toast } from "react-toastify";
 import { useGetUserAccountDetails } from "@/apis/utility";
@@ -89,7 +89,9 @@ const ProfileHeaderSkeleton = () => (
   </div>
 );
 
-export function OtherUserProfile({ slug }: { slug: string }) {
+export function OtherUserProfile() {
+  const searchParams = useSearchParams();
+  const slug = searchParams.get("id") || "";
   const [searchQuery, setSearchQuery] = useState("");
   const [isOpen, setIsOpen] = useState(false);
   const { handlePostLikes, handleRepost} = usePostHook();

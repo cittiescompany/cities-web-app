@@ -70,10 +70,11 @@ export function PostCard({ post, handlePostLikes, handleRepost }: PostCardProps)
     if (num >= 1000) {
       return (num / 1000).toFixed(1) + "k";
     }
-    return num.toString();
+    return num?.toString();
   };
   
-  function formatPostTime(timestamp: string) {
+  function formatPostTime(timestamp?: string) {
+    if (!timestamp) return "";
     const date = new Date(timestamp);
     return date.toLocaleDateString("en-US", {
       day: "numeric",
@@ -84,7 +85,7 @@ export function PostCard({ post, handlePostLikes, handleRepost }: PostCardProps)
 
 
   const goToProfile = () => {
-    router.push(`/n/profile/${post.User.unique_id}`);
+    router.push(`/n/profile/details?id=${post?.User?.unique_id}`);
   }
   
   return (
@@ -94,10 +95,10 @@ export function PostCard({ post, handlePostLikes, handleRepost }: PostCardProps)
            <Avatar onClick={goToProfile} className="w-14 h-14 flex-shrink-0 cursor-pointer">
           <AvatarImage
             src={post?.User?.profile_pic}
-            alt={post.User.first_name}
+            alt={post?.User?.first_name}
           />
           <AvatarFallback>
-            {post?.User?.first_name.charAt(0)}
+            {post?.User?.first_name?.charAt(0)}
           </AvatarFallback>
         </Avatar>
            <div className="absolute -bottom-1 -right-1 bg-red-500 rounded-full p-1 border-2 border-white cursor-pointer hover:bg-red-600 transition-colors">
@@ -116,20 +117,20 @@ export function PostCard({ post, handlePostLikes, handleRepost }: PostCardProps)
             </span>
           </div>
             <span className="text-gray-500 text-sm">
-              {formatPostTime(post.createdAt)}
+              {formatPostTime(post?.createdAt)}
             </span>
           </div>
         </div>
 
       {/* Content */}
       <div className="mb-3">
-        <p className="text-gray-900 text-base leading-normal">{post.Post.content}</p>
+        <p className="text-gray-900 text-base leading-normal">{post?.Post?.content}</p>
       </div>
 
       {/* Media */}
-      {post.Post.Media.length > 0 && (
+      {post?.Post?.Media?.length > 0 && (
         <div className="mb-3 rounded-2xl overflow-hidden border border-gray-200">
-          <PostMedia mediaItems={post.Post.Media} />
+          <PostMedia mediaItems={post?.Post?.Media} />
         </div>
       )}
 
@@ -138,7 +139,7 @@ export function PostCard({ post, handlePostLikes, handleRepost }: PostCardProps)
         <CommentsDailog post={post}>
           <div className="flex items-center gap-2 hover:text-blue-500 cursor-pointer">
             <MessageCircle className="w-4 h-4" />
-            <span>{formatNumber(post.Post.commentcount)}</span>
+            <span>{formatNumber(post?.Post?.commentcount)}</span>
           </div>
         </CommentsDailog>
         
@@ -147,23 +148,23 @@ export function PostCard({ post, handlePostLikes, handleRepost }: PostCardProps)
           className="flex items-center gap-2 hover:text-green-500"
         >
           <Share2 className="w-4 h-4" />
-          <span>{formatNumber(post.Post.rePostCount)}</span>
+          <span>{formatNumber(post?.Post?.rePostCount)}</span>
         </Link>
         
         <Link
-          href={`/n/${post.post_id}/post-engagement?type=likes`}
+          href={`/n/post-engagement?id=${post?.post_id}&type=likes`}
           className="flex items-center gap-2 hover:text-red-500"
         >
           <Heart className="w-4 h-4" />
-          <span>{formatNumber(post.Post.reactionscount)}</span>
+          <span>{formatNumber(post?.Post?.reactionscount)}</span>
         </Link>
         
         <Link
-          href={`/n/${post.post_id}/post-engagement?type=views`}
+          href={`/n/post-engagement?id=${post?.post_id}&type=views`}
           className="flex items-center gap-2 hover:text-blue-500"
         >
           <Eye className="w-4 h-4" />
-          <span>{formatNumber(post.Post.views)}</span>
+          <span>{formatNumber(post?.Post?.views)}</span>
         </Link>
       </div>
 
@@ -180,7 +181,7 @@ export function PostCard({ post, handlePostLikes, handleRepost }: PostCardProps)
           </button>
         </CommentsDailog>
         
-        <RepostDialog id={post.post_id} onRepost={handleRepost}>
+        <RepostDialog id={post?.post_id} onRepost={handleRepost}>
           <button 
             className="flex items-center gap-2 group hover:text-green-500"
             onClick={handleShare}
@@ -193,10 +194,10 @@ export function PostCard({ post, handlePostLikes, handleRepost }: PostCardProps)
         
         <button
           className="flex items-center gap-2 group hover:text-red-500"
-          onClick={() => handlePostLikes && handlePostLikes(post.post_id)}
+          onClick={() => handlePostLikes && handlePostLikes(post?.post_id)}
         >
           <div className="flex items-center justify-center w-8 h-8 rounded-full group-hover:bg-red-100">
-            <Heart className={`w-4 h-4 ${post.Post.isLike ? "fill-red-500 text-red-500" : ""}`} />
+            <Heart className={`w-4 h-4 ${post?.Post?.isLike ? "fill-red-500 text-red-500" : ""}`} />
           </div>
         </button>
         

@@ -20,11 +20,10 @@ interface EngagementUser {
 
 export default function PostEngagement() {
     
-      const params = useParams();
       const searchParams = useSearchParams();
       const router = useRouter();
       // Extract the values
-      const id = params.id;
+      const id = searchParams.get("id");
       const type = searchParams.get("type");
 //   const { user } = useAuth();
   const [engagementType, setEngagementType] = useState<EngagementType | string>(type || "likes");
@@ -60,7 +59,7 @@ export default function PostEngagement() {
   const filteredUsers = engagementData?.filter((u) =>
     u.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
     u.email.toLowerCase().includes(searchQuery.toLowerCase())
-  );
+  ) || [];
 
   const handleConnect = (userId: string) => {
     const newConnected = new Set(connectedUsers);

@@ -24,6 +24,7 @@ import { CommentType, RePostType } from "@/types/type-props";
 import PostMedia from "../PostMedia";
 import clientApi from "@/apis/clientApi";
 import { FaRegComments } from "react-icons/fa6";
+import Link from "next/link";
 
 const CommentsDailog = ({
   children,
@@ -35,8 +36,8 @@ const CommentsDailog = ({
   const [postComments, setPostComments] = useState("");
   const [commentsDatas, setCommentsDatas] = useState<CommentType[] | []>([]);
   const [replyComments, setreplyComments] = useState("");
-  const [isLiked, setIsLiked] = useState(post.Post.isLike);
-  const [likes, setLikes] = useState(post.Post.reactionscount);
+  const [isLiked, setIsLiked] = useState(post?.Post?.isLike);
+  const [likes, setLikes] = useState(post?.Post?.reactionscount || 0);
   const [isReply, setIsReply] = useState<boolean>(false);
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [commentIndex, setCommentIndex] = useState<string | undefined>("");
@@ -65,7 +66,8 @@ const CommentsDailog = ({
     console.log(e.target.value);
   };
 
-  function formatPostTime(timestamp: string) {
+  function formatPostTime(timestamp?: string) {
+    if (!timestamp) return "";
     const date = new Date(timestamp);
     return date.toLocaleTimeString([], {
       hour: "2-digit",
@@ -76,7 +78,7 @@ const CommentsDailog = ({
   const handlePostComments = () => {
     const data = {
       content: postComments,
-      post_id: post.post_id,
+      post_id: post?.post_id,
     };
     const response = clientApi.post(`/post/comment`, data);
     response
@@ -95,14 +97,14 @@ const CommentsDailog = ({
   const fetchPostComments = useCallback(async () => {
     try {
       const res = await clientApi.get(
-        `/post/comments/?post_id=${post.post_id}`
+        `/post/comments/?post_id=${post?.post_id}`
       );
-      console.log(res.data.comments);
-      setCommentsDatas(res.data.comments);
+      console.log(res?.data?.comments);
+      setCommentsDatas(res?.data?.comments || []);
     } catch (error) {
       console.error("Error fetching post comments:", error);
     }
-  }, [post.post_id]);
+  }, [post?.post_id]);
 
   useEffect(() => {
     fetchPostComments();
@@ -140,7 +142,7 @@ const CommentsDailog = ({
               <button className="text" onClick={() => setIsOpen(false)}>
                 <IoIosArrowBack />
               </button>
-              Comments({post.Post.commentcount})
+              Comments({post?.Post?.commentcount || 0})
             </DialogTitle>
             <DialogDescription>
               View and add comments on this post.
@@ -153,16 +155,16 @@ const CommentsDailog = ({
                   <Avatar>
                     <AvatarImage
                       src={post?.User?.profile_pic}
-                      alt={post.User.first_name}
+                      alt={post?.User?.first_name}
                     />
                     <AvatarFallback>
-                      {post?.User?.first_name.charAt(0)}
+                      {post?.User?.first_name?.charAt(0)}
                     </AvatarFallback>
                   </Avatar>
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-2 flex-wrap">
                       <CardTitle className="text-base">
-                        {post?.User?.first_name + " " + post?.User?.last_name}
+                        {(post?.User?.first_name || "") + " " + (post?.User?.last_name || "")}
                       </CardTitle>
                       {/* {post.sponsored && (
                         <Badge variant="secondary" className="text-xs">
@@ -172,7 +174,7 @@ const CommentsDailog = ({
                     </div>
                     <CardDescription className="flex items-center gap-2 mb-2">
                       {post?.User?.user_name} •{" "}
-                      {formatPostTime(post.createdAt)}
+                      {formatPostTime(post?.createdAt)}
                     </CardDescription>
                   </div>
                 </div>
@@ -180,13 +182,13 @@ const CommentsDailog = ({
               <div>
                 {/* <h3 className="font-semibold mb-2">{post.Post.title}</h3> */}
                 <p className="text-sm text-muted-foreground mb-2">
-                  {post.Post.content}
+                  {post?.Post?.content}
                 </p>
               </div>
 
-              {post.Post.Media.length > 0 && (
+              {post?.Post?.Media?.length > 0 && (
                 <PostMedia
-                  mediaItems={post.Post.Media}
+                  mediaItems={post?.Post?.Media}
                   className="max-h-[230px]"
                 />
               )}
@@ -213,7 +215,7 @@ const CommentsDailog = ({
                   >
                     <HiMiniUserGroup className="w-4 h-4" />
                     <span className="hidden sm:inline">
-                      {formatNumber(post.Post.commentcount)}
+                      {formatNumber(post?.Post?.commentcount || 0)}
                     </span>
                   </Button>
                 </p>
@@ -229,7 +231,7 @@ const CommentsDailog = ({
                 >
                   <Share2 className="w-4 h-4" />
                   <span className="hidden sm:inline">
-                    {formatNumber(post.Post.rePostCount)}
+                    {formatNumber(post?.Post?.rePostCount || 0)}
                   </span>
                 </Button>
 
@@ -239,7 +241,7 @@ const CommentsDailog = ({
                   className="flex items-center gap-2"
                 >
                   <Eye className="w-4 h-4" />
-                  <span className="">{formatNumber(post.Post.views)}</span>
+                  <span className=""><Link href={`/n/post-engagement?id=${post?.post_id}&type=views`}>{formatNumber(post?.Post?.views || 0)}</Link></span>
                 </Button>
               </div>
             </div>
@@ -282,21 +284,21 @@ const CommentsDailog = ({
                   <div className="flex gap-3 my-5 flex-1">
                     <Avatar>
                       <AvatarImage
-                        src={co.User.profile_pic}
-                        alt={co.User.first_name}
+                        src={co?.User?.profile_pic}
+                        alt={co?.User?.first_name}
                       />
                       <AvatarFallback>
-                        {co.User.first_name.charAt(0)}
+                        {co?.User?.first_name?.charAt(0)}
                       </AvatarFallback>
                     </Avatar>
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center gap-2 flex-wrap">
                         <CardTitle className="text-base">
-                          {co.User.first_name}
+                          {co?.User?.first_name}
                         </CardTitle>
                       </div>
                       <CardDescription className="flex items-center gap-2">
-                        {co.User.user_name} • {formatPostTime(co.createdAt)}
+                        {co?.User?.user_name} • {formatPostTime(co?.createdAt)}
                       </CardDescription>
                       <div className="text flex justify-between">
                         <div className="text">
@@ -313,11 +315,11 @@ const CommentsDailog = ({
                         >
                           <ThumbsUp
                             className={`w-4 h-4 ${
-                              co.isLike ? "text-blue-600" : ""
+                              co?.isLike ? "text-blue-600" : ""
                             }`}
                           />
                           <span className="hidden sm:inline">
-                            {co.reactionCount}
+                            {co?.reactionCount}
                           </span>
                         </Button>
                         <Button
@@ -326,15 +328,15 @@ const CommentsDailog = ({
                           className="flex items-center gap-2"
                           onClick={() => {
                             setIsReply(!isReply);
-                            setCommentIndex(co.unique_id);
+                            setCommentIndex(co?.unique_id);
                           }}
                         >
                           <FaRegComments className="w-4 h-4" />
                           <span className="hidden sm:inline">
-                            {co.replyCount}
+                            {co?.replyCount}
                           </span>
                         </Button>
-                        {isReply && commentIndex === co.unique_id && (
+                        {isReply && commentIndex === co?.unique_id && (
                           // <div className="text relative w-full">
                           //   <Input
                           //     type="text"
@@ -366,7 +368,7 @@ const CommentsDailog = ({
                         rows={1}
                       />
                       <Button
-                        onClick={()=>handleReplyComment(co.unique_id, post.post_id)}
+                        onClick={()=>handleReplyComment(co?.unique_id, post?.post_id)}
                         disabled={!replyComments.trim()}
                         className="bg-blue-500 hover:bg-blue-600 text-white rounded-full px-6 h-9 whitespace-nowrap shrink-0"
                       >
@@ -377,24 +379,24 @@ const CommentsDailog = ({
                       </div>
                     </div>
                   </div>
-                  {co.length > 0 &&
-                    co.replies.map((rep) => (
-                      <div key={rep.id} className="text ml-10">
+                  {co?.replies?.length > 0 &&
+                    co?.replies?.map((rep) => (
+                      <div key={rep?.id} className="text ml-10">
                         <div className="flex gap-3 my-5 flex-1">
                           <Avatar>
-                            <AvatarImage src={rep.avatar} alt={rep.author} />
+                            <AvatarImage src={rep?.avatar} alt={rep?.author} />
                             <AvatarFallback>
-                              {rep.author.charAt(0)}
+                              {rep?.author?.charAt(0)}
                             </AvatarFallback>
                           </Avatar>
                           <div className="flex-1 min-w-0">
                             <div className="flex items-center gap-2 flex-wrap">
                               <CardTitle className="text-base">
-                                {rep.author}
+                                {rep?.author}
                               </CardTitle>
                             </div>
                             <CardDescription className="flex items-center gap-2">
-                              {rep.username} • {rep.time}
+                              {rep?.username} • {rep?.time}
                             </CardDescription>
                             <div className="text flex justify-between">
                               <p className="text">{rep?.content}</p>
@@ -402,27 +404,27 @@ const CommentsDailog = ({
                             </div>
                           </div>
                         </div>
-                        {rep.replies.length > 0 &&
-                          rep.replies.map((subrep) => (
-                            <div key={subrep.id} className="text ml-10">
+                        {rep?.replies?.length > 0 &&
+                          rep?.replies?.map((subrep) => (
+                            <div key={subrep?.id} className="text ml-10">
                               <div className="flex gap-3 my-5 flex-1">
                                 <Avatar>
                                   <AvatarImage
-                                    src={subrep.avatar}
-                                    alt={subrep.author}
+                                    src={subrep?.avatar}
+                                    alt={subrep?.author}
                                   />
                                   <AvatarFallback>
-                                    {subrep.author.charAt(0)}
+                                    {subrep?.author?.charAt(0)}
                                   </AvatarFallback>
                                 </Avatar>
                                 <div className="flex-1 min-w-0">
                                   <div className="flex items-center gap-2 flex-wrap">
                                     <CardTitle className="text-base">
-                                      {subrep.author}
+                                      {subrep?.author}
                                     </CardTitle>
                                   </div>
                                   <CardDescription className="flex items-center gap-2">
-                                    {subrep.username} • {subrep.time}
+                                    {subrep?.username} • {subrep?.time}
                                   </CardDescription>
                                   <div className="text flex justify-between">
                                     <p className="text">{subrep?.content}</p>

@@ -4,13 +4,29 @@ import { useState } from "react";
 import { ChevronLeft, Heart, Share2, MessageCircle, Zap } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { Product } from "@/types/type-props";
+import { mockProducts } from "@/lib/mockData";
 
-export default function ProductDetails({data}: {data: Product}) {
+export default function ProductDetails() {
+  const searchParams = useSearchParams();
+  const id = searchParams.get("id");
+  const data = mockProducts.find(product => product.id === id);
+
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [isSaved, setIsSaved] = useState(false);
   const router = useRouter();
+
+  if (!data) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-center">
+          <h2 className="text-xl font-bold mb-4">Product not found</h2>
+          <Button onClick={() => router.push("/n/markets")}>Back to Marketplace</Button>
+        </div>
+      </div>
+    );
+  }
 
   const handlePrevImage = () => {
     setCurrentImageIndex((prev) => (prev === 0 ? 0 : prev - 1));
