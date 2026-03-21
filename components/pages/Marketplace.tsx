@@ -180,7 +180,7 @@ function ProductCard({ product }: { product: Product }) {
 
   return (
     <Card
-      onClick={() => router.push(`/n/markets/${product.id}`)}
+      onClick={() => router.push(`/n/markets/details?id=${product.id}`)}
       className="overflow-hidden hover:shadow-lg transition-shadow cursor-pointer group"
     >
       <div className="relative overflow-hidden bg-slate-200 h-48">

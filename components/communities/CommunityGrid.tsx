@@ -86,7 +86,7 @@ export default function CommunityGrid({filteredCommunities, isLoading}:{filtered
                 <p className="text-xs text-gray-500 mb-4">
                   {community.conversationCount} conversation
                 </p>
-                <Link className="w-full" href={`/n/communities/${community?.unique_id}`}>
+                <Link className="w-full" href={`/n/communities/details?id=${community?.unique_id}`}>
                   <Button className="w-full bg-blue-600 hover:bg-blue-700 text-white text-sm">
                     View
                   </Button>

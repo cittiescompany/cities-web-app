@@ -73,7 +73,8 @@ export function PostCard({ post, handlePostLikes, handleRepost }: PostCardProps)
     return num?.toString();
   };
   
-  function formatPostTime(timestamp: string) {
+  function formatPostTime(timestamp?: string) {
+    if (!timestamp) return "";
     const date = new Date(timestamp);
     return date.toLocaleDateString("en-US", {
       day: "numeric",
@@ -84,7 +85,7 @@ export function PostCard({ post, handlePostLikes, handleRepost }: PostCardProps)
 
 
   const goToProfile = () => {
-    router.push(`/n/profile/${post?.User?.unique_id}`);
+    router.push(`/n/profile/details?id=${post?.User?.unique_id}`);
   }
   
   return (
@@ -151,7 +152,7 @@ export function PostCard({ post, handlePostLikes, handleRepost }: PostCardProps)
         </Link>
         
         <Link
-          href={`/n/${post?.post_id}/post-engagement?type=likes`}
+          href={`/n/post-engagement?id=${post?.post_id}&type=likes`}
           className="flex items-center gap-2 hover:text-red-500"
         >
           <Heart className="w-4 h-4" />
@@ -159,7 +160,7 @@ export function PostCard({ post, handlePostLikes, handleRepost }: PostCardProps)
         </Link>
         
         <Link
-          href={`/n/${post?.post_id}/post-engagement?type=views`}
+          href={`/n/post-engagement?id=${post?.post_id}&type=views`}
           className="flex items-center gap-2 hover:text-blue-500"
         >
           <Eye className="w-4 h-4" />

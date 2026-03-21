@@ -24,6 +24,7 @@ import { CommentType, RePostType } from "@/types/type-props";
 import PostMedia from "../PostMedia";
 import clientApi from "@/apis/clientApi";
 import { FaRegComments } from "react-icons/fa6";
+import Link from "next/link";
 
 const CommentsDailog = ({
   children,
@@ -36,7 +37,7 @@ const CommentsDailog = ({
   const [commentsDatas, setCommentsDatas] = useState<CommentType[] | []>([]);
   const [replyComments, setreplyComments] = useState("");
   const [isLiked, setIsLiked] = useState(post?.Post?.isLike);
-  const [likes, setLikes] = useState(post?.Post?.reactionscount);
+  const [likes, setLikes] = useState(post?.Post?.reactionscount || 0);
   const [isReply, setIsReply] = useState<boolean>(false);
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [commentIndex, setCommentIndex] = useState<string | undefined>("");
@@ -65,7 +66,8 @@ const CommentsDailog = ({
     console.log(e.target.value);
   };
 
-  function formatPostTime(timestamp: string) {
+  function formatPostTime(timestamp?: string) {
+    if (!timestamp) return "";
     const date = new Date(timestamp);
     return date.toLocaleTimeString([], {
       hour: "2-digit",
@@ -76,7 +78,7 @@ const CommentsDailog = ({
   const handlePostComments = () => {
     const data = {
       content: postComments,
-      post_id: post.post_id,
+      post_id: post?.post_id,
     };
     const response = clientApi.post(`/post/comment`, data);
     response
@@ -95,14 +97,14 @@ const CommentsDailog = ({
   const fetchPostComments = useCallback(async () => {
     try {
       const res = await clientApi.get(
-        `/post/comments/?post_id=${post.post_id}`
+        `/post/comments/?post_id=${post?.post_id}`
       );
-      console.log(res.data.comments);
-      setCommentsDatas(res.data.comments);
+      console.log(res?.data?.comments);
+      setCommentsDatas(res?.data?.comments || []);
     } catch (error) {
       console.error("Error fetching post comments:", error);
     }
-  }, [post.post_id]);
+  }, [post?.post_id]);
 
   useEffect(() => {
     fetchPostComments();
@@ -140,7 +142,7 @@ const CommentsDailog = ({
               <button className="text" onClick={() => setIsOpen(false)}>
                 <IoIosArrowBack />
               </button>
-              Comments({post?.Post?.commentcount})
+              Comments({post?.Post?.commentcount || 0})
             </DialogTitle>
             <DialogDescription>
               View and add comments on this post.
@@ -162,7 +164,7 @@ const CommentsDailog = ({
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-2 flex-wrap">
                       <CardTitle className="text-base">
-                        {post?.User?.first_name + " " + post?.User?.last_name}
+                        {(post?.User?.first_name || "") + " " + (post?.User?.last_name || "")}
                       </CardTitle>
                       {/* {post.sponsored && (
                         <Badge variant="secondary" className="text-xs">
@@ -213,7 +215,7 @@ const CommentsDailog = ({
                   >
                     <HiMiniUserGroup className="w-4 h-4" />
                     <span className="hidden sm:inline">
-                      {formatNumber(post?.Post?.commentcount)}
+                      {formatNumber(post?.Post?.commentcount || 0)}
                     </span>
                   </Button>
                 </p>
@@ -229,7 +231,7 @@ const CommentsDailog = ({
                 >
                   <Share2 className="w-4 h-4" />
                   <span className="hidden sm:inline">
-                    {formatNumber(post?.Post?.rePostCount)}
+                    {formatNumber(post?.Post?.rePostCount || 0)}
                   </span>
                 </Button>
 
@@ -239,7 +241,7 @@ const CommentsDailog = ({
                   className="flex items-center gap-2"
                 >
                   <Eye className="w-4 h-4" />
-                  <span className="">{formatNumber(post?.Post?.views)}</span>
+                  <span className=""><Link href={`/n/post-engagement?id=${post?.post_id}&type=views`}>{formatNumber(post?.Post?.views || 0)}</Link></span>
                 </Button>
               </div>
             </div>
@@ -286,7 +288,7 @@ const CommentsDailog = ({
                         alt={co?.User?.first_name}
                       />
                       <AvatarFallback>
-                        {co?.User?.first_name.charAt(0)}
+                        {co?.User?.first_name?.charAt(0)}
                       </AvatarFallback>
                     </Avatar>
                     <div className="flex-1 min-w-0">
@@ -326,7 +328,7 @@ const CommentsDailog = ({
                           className="flex items-center gap-2"
                           onClick={() => {
                             setIsReply(!isReply);
-                            setCommentIndex(co.unique_id);
+                            setCommentIndex(co?.unique_id);
                           }}
                         >
                           <FaRegComments className="w-4 h-4" />
@@ -377,14 +379,14 @@ const CommentsDailog = ({
                       </div>
                     </div>
                   </div>
-                  {co.length > 0 &&
-                    co.replies.map((rep) => (
-                      <div key={rep.id} className="text ml-10">
+                  {co?.replies?.length > 0 &&
+                    co?.replies?.map((rep) => (
+                      <div key={rep?.id} className="text ml-10">
                         <div className="flex gap-3 my-5 flex-1">
                           <Avatar>
                             <AvatarImage src={rep?.avatar} alt={rep?.author} />
                             <AvatarFallback>
-                              {rep?.author ? rep?.author?.charAt(0) : ''}
+                              {rep?.author?.charAt(0)}
                             </AvatarFallback>
                           </Avatar>
                           <div className="flex-1 min-w-0">
@@ -402,27 +404,27 @@ const CommentsDailog = ({
                             </div>
                           </div>
                         </div>
-                        {rep.replies.length > 0 &&
-                          rep.replies.map((subrep) => (
-                            <div key={subrep.id} className="text ml-10">
+                        {rep?.replies?.length > 0 &&
+                          rep?.replies?.map((subrep) => (
+                            <div key={subrep?.id} className="text ml-10">
                               <div className="flex gap-3 my-5 flex-1">
                                 <Avatar>
                                   <AvatarImage
-                                    src={subrep.avatar}
-                                    alt={subrep.author}
+                                    src={subrep?.avatar}
+                                    alt={subrep?.author}
                                   />
                                   <AvatarFallback>
-                                    {subrep.author.charAt(0)}
+                                    {subrep?.author?.charAt(0)}
                                   </AvatarFallback>
                                 </Avatar>
                                 <div className="flex-1 min-w-0">
                                   <div className="flex items-center gap-2 flex-wrap">
                                     <CardTitle className="text-base">
-                                      {subrep.author}
+                                      {subrep?.author}
                                     </CardTitle>
                                   </div>
                                   <CardDescription className="flex items-center gap-2">
-                                    {subrep.username} • {subrep.time}
+                                    {subrep?.username} • {subrep?.time}
                                   </CardDescription>
                                   <div className="text flex justify-between">
                                     <p className="text">{subrep?.content}</p>

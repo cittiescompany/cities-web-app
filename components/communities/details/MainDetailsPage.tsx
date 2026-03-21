@@ -16,10 +16,14 @@ import Befriend from "./Befriend";
 import { useGetSingleCommunity } from "@/apis/communityMutation";
 import { useSelector } from "react-redux";
 
+import { useSearchParams } from "next/navigation";
+
 // Import all pages
 
 
-function MainDetailsPage({slug}) {
+function MainDetailsPage() {
+  const searchParams = useSearchParams();
+  const slug = searchParams.get("id") || "";
   const [activeTab, setActiveTab] = useState("all");
   
   console.log({slug});

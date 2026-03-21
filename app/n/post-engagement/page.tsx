@@ -1,16 +1,12 @@
 import PostEngagement from '@/components/pages/PostEngagement'
-import React from 'react'
+import React, { Suspense } from 'react'
 
 const PostEngagementPage = () => {
   return (
-    <div>
+    <Suspense fallback={<div>Loading...</div>}>
       <PostEngagement />
-    </div>
+    </Suspense>
   )
 }
 
 export default PostEngagementPage;
-
-export async function generateStaticParams() {
-  return [{ slug: "1" }];
-}
