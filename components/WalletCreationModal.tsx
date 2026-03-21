@@ -1,3 +1,4 @@
+"use client"
 /* eslint-disable react/prop-types */
 
 import { useState } from "react";
@@ -55,12 +56,6 @@ const WalletCreationModal = ({ cancel, setCancel }: WalletCreationModalProps) =>
       !errors.nin
     );
   };
-
-//  my bvn
-// 22531171219
-
-//my nin
-//95862476647
 
   const createWallet = async () => {
     // Double-check validation before submitting
