@@ -11,7 +11,7 @@ import glo from "../../assets/images/Glo.svg";
 import airtel from "../../assets/images/Airtel.svg";
 import mobile from "../../assets/images/9mobile.svg";
 import Image from "next/image";
-import { useGetDataPlan, usePurchase } from "@/apis/utility";
+import { useGetPlan, usePurchase } from "@/apis/utility";
 import {
   Select,
   SelectContent,
@@ -120,7 +120,7 @@ export default function Data() {
     mutateAsync: getDataPlans,
     data: dataPlan,
     isPending: loadingPlans,
-  } = useGetDataPlan();
+  } = useGetPlan();
 
   const {
     mutateAsync: purchaseUtility,
@@ -356,14 +356,14 @@ export default function Data() {
                         {dataPlan.map((plan: DataPlan) => (
                           <SelectItem key={plan.code} value={plan.code}>
                             <div className="flex items-center justify-between w-full gap-4">
-                              <span className="font-medium md:hidden">
+                              <span className="text-gray-600 font-medium md:hidden">
                                 {plan.desc.length > 20 ? plan.desc.substring(0, 25) + "..." : plan.desc}
                               </span>
-                              <span className="font-medium hidden md:block">
+                              <span className="text-gray-600 font-medium hidden md:block">
                                 {plan.desc.length > 50 ? plan.desc.substring(0, 50) + "..." : plan.desc}
                               </span>
-                              <span className="text-blue-600 font-bold whitespace-nowrap">
-                                ₦{plan.price}
+                              <span className="bg-gray-100 p-0.5 rounded font-semibold whitespace-nowrap">
+                                 ₦{plan.price.toLocaleString()}
                               </span>
                             </div>
                           </SelectItem>

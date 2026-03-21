@@ -307,3 +307,13 @@ onSuccess:()=>{
 }
   });
 }
+
+
+export const useUserSearchMutation = () => {
+  return useMutation({
+    mutationFn: async(payload:string) => {
+      const response = await clientApi.get(`/user/search/?query=${payload}`);
+      return response?.data?.data
+    }
+  });
+};

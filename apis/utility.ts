@@ -3,6 +3,7 @@ import clientApi from "./clientApi";
 import { PurchasePayload, TransferPayload } from "@/types/type-props";
 import { AxiosError } from "axios";
 import { VerificationResponse } from "@/components/wallet/OutboundTransfer";
+import { MeterVerificationPayload, MeterVerificationResponse } from "@/components/wallet/Electricity";
 
 // const baseUrl='https://lendnode.creditclan.com/gateway/buypower/buypower/buypower/'
 const additionalUrl='/payment/bills/'
@@ -59,7 +60,7 @@ export const useVerifyPayment = () => {
     }
   });
 };
-export const useGetDataPlan = () => {
+export const useGetPlan = () => {
    return useMutation({
     mutationFn: async (payload:{vertical:string,provider:string}) => {
       return await clientApi.post(`${additionalUrl}price_list`,payload).then((res) => {
@@ -69,6 +70,28 @@ export const useGetDataPlan = () => {
     onError: (err) => {
       console.log(err);
     }
+  });
+};
+export const useGetBranches = () => {
+   return useQuery({
+    queryKey: ["branches"],
+    queryFn: async () => {
+         return [
+        { id: 1, name: "Lagos" },
+        { id: 2, name: "Abuja" },
+        { id: 3, name: "Port Harcourt" },
+         { id: 4, name: "Kano" },
+         { id: 5, name: "Ibadan" },
+         { id: 6, name: "Enugu" },
+         { id: 7, name: "Benin City" },
+         { id: 8, name: "Maiduguri" },
+         { id: 9, name: "Kaduna" },
+         { id: 10, name: "Yola" },
+      ]
+      // return await clientApi.get(`${additionalUrl}price_list`).then((res) => {
+      //  return res?.data?.data;
+      // });
+    },
   });
 };
 
@@ -87,6 +110,19 @@ export const useVerifyAccount = () => {
    return useMutation<VerificationResponse, AxiosError<ErrorResponse>, { bankCode: string, accountNumber: string,}>({
     mutationFn: async (payload) => {
       return await clientApi.post("/payment/verify_account",payload).then((res) => {
+       return res?.data?.data;
+      });
+    },
+    onError: (err) => {
+      console.log(err);
+    }
+  });
+};
+
+export const useVerifyMeterNumber = () => {
+   return useMutation<MeterVerificationResponse, AxiosError<ErrorResponse>, MeterVerificationPayload>({
+    mutationFn: async (payload) => {
+      return await clientApi.post("/payment/bills/check_meter",payload).then((res) => {
        return res?.data?.data;
       });
     },

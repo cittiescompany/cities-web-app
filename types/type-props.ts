@@ -386,7 +386,7 @@ export interface PurchasePayload {
   email: string;
   orderId?: string;
   paymentType: string;
-  pin: string;
+  pin?: string;
   tariffClass?: string; 
 }
 

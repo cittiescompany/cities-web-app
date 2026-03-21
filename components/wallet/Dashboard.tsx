@@ -15,6 +15,7 @@ import {
   User,
   ChevronLeft,
   ChevronRight,
+  Tv,
 } from "lucide-react";
 import { useState, useEffect } from "react";
 import { usePayment } from "./PaymentContext";
@@ -24,7 +25,7 @@ import { useGetUserWalletBalance } from "@/apis/auth";
 import WalletCreationModal from "../WalletCreationModal";
 import { useAuth } from "@/hooks/useAuth";
 import { formatCurrency } from "@/lib/utils";
-import { IoCheckmark, IoCopyOutline } from "react-icons/io5";
+import { IoBulbOutline, IoCheckmark, IoCopyOutline } from "react-icons/io5";
 import { useRouter } from "next/navigation";
 import PinCreationModal from "../PinCreationModal";
 import { useGetTransactions } from "@/apis/utility";
@@ -337,34 +338,48 @@ export default function Dashboard() {
         </Card>
 
         {/* Quick Actions */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 mb-8">
           <Button
             onClick={() => handleNavigate("outbound")}
             className="h-24 w-full bg-white border-2 cursor-pointer border-gray-200 hover:border-blue-500 hover:bg-blue-50 text-gray-900 flex flex-col items-center justify-center gap-2 rounded-xl transition"
           >
-            <Send size={40} className="text-blue-600" />
+            <Send size={46} className="text-blue-600" />
             <span className="font-semibold">Transfer</span>
           </Button>
           <Button
             onClick={() => handleNavigate("airtime")}
             className="h-24 w-full bg-white border-2 cursor-pointer border-gray-200 hover:border-blue-500 hover:bg-blue-50 text-gray-900 flex flex-col items-center justify-center gap-2 rounded-xl transition"
           >
-            <Smartphone size={40} className="text-purple-600" />
+            <Smartphone size={46} className="text-purple-600" />
             <span className="font-semibold">Airtime</span>
           </Button>
           <Button
             onClick={() => handleNavigate("data")}
             className="h-24 w-full bg-white border-2 cursor-pointer border-gray-200 hover:border-blue-500 hover:bg-blue-50 text-gray-900 flex flex-col items-center justify-center gap-2 rounded-xl transition"
           >
-            <Wifi size={40} className="text-cyan-600" />
+            <Wifi size={46} className="text-cyan-600" />
             <span className="font-semibold">Data</span>
           </Button>
           <Button
+            onClick={() => handleNavigate("electricity")}
+            className="h-24 w-full bg-white border-2 cursor-pointer border-gray-200 hover:border-blue-500 hover:bg-blue-50 text-gray-900 flex flex-col items-center justify-center gap-2 rounded-xl transition"
+          >
+            <IoBulbOutline size={46} className="text-orange-600" />
+            <span className="font-semibold">Electricity</span>
+          </Button>
+          <Button
+            onClick={() => handleNavigate("tv")}
+            className="h-24 w-full bg-white border-2 cursor-pointer border-gray-200 hover:border-blue-500 hover:bg-blue-50 text-gray-900 flex flex-col items-center justify-center gap-2 rounded-xl transition"
+          >
+            <Tv size={46} className="text-green-600" />
+            <span className="font-semibold">TV</span>
+          </Button>
+          {/* <Button
             className="h-24 w-full bg-white border-2 cursor-pointer border-gray-200 hover:border-blue-500 hover:bg-blue-50 text-gray-900 flex flex-col items-center justify-center gap-2 rounded-xl transition"
           >
             <MdDashboard size={40} className="text-gray-600" />
             <span className="font-semibold">More</span>
-          </Button>
+          </Button> */}
         </div>
 
         {/* Stats Grid */}

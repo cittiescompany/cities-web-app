@@ -51,13 +51,31 @@ export default function TransferSuccessModal({ isOpen, onClose, data={recipient:
             You have successfully sent an airtime of <span className="font-bold">{formatCurrency(data.amount)}</span> to <span className="font-semibold">{data.recipient}</span>
           </p>
           </div>
-         ):(
+         ):data.type === "data" ?(
            <div>
           <h1 className="text-2xl font-bold text-gray-900 mb-4">
             Data Purchase Successful!
           </h1>
           <p className="text-gray-600 mb-8">
             You have successfully sent an data of <span className="font-bold">{formatCurrency(data.amount)}</span> to <span className="font-semibold">{data.recipient}</span>
+          </p>
+          </div>
+         ):data.type === "electricity" ?(
+           <div>
+          <h1 className="text-2xl font-bold text-gray-900 mb-4">
+            Payment Successful!
+          </h1>
+          <p className="text-gray-600 mb-8">
+            You have successfully paid <span className="font-bold">{formatCurrency(data.amount)}</span> for <span className="font-semibold">{data.recipient}</span> electricity bill
+          </p>
+          </div>
+         ):(
+           <div>
+          <h1 className="text-2xl font-bold text-gray-900 mb-4">
+            Tv Subscription Successful!
+          </h1>
+          <p className="text-gray-600 mb-8">
+            You have successfully made <span className="font-bold">{formatCurrency(data.amount)}</span> subscription on your <span className="font-bold">{data.recipient}</span>
           </p>
           </div>
          )}

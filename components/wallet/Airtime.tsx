@@ -17,6 +17,7 @@ import { useAuth } from "@/hooks/useAuth";
 import { toast } from "react-toastify";
 import { PurchasePayload } from "@/types/type-props";
 import TransferSuccessModal from "./TransferSuccessModal";
+import { formatWithCommas } from "@/lib/utils";
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -384,7 +385,7 @@ export default function Airtime() {
                       }`}
                       aria-pressed={selectedPlan === plan.amount}
                     >
-                      ₦{plan.amount.toLocaleString()}
+                      ₦{formatWithCommas(plan.amount)}
                     </button>
                   ))}
                 </div>
@@ -402,12 +403,21 @@ export default function Airtime() {
                   id="manual-amount"
                   type="number"
                   placeholder="Enter custom amount"
-                  value={selectedPlan !== null ? selectedPlan : ""}
+                  // value={selectedPlan !== null ? selectedPlan : ""}
+                  value={
+                  selectedPlan !== null ? `₦${formatWithCommas(selectedPlan)}` : ""
+                }
                   min={MIN_AMOUNT}
                   max={MAX_AMOUNT}
                   onChange={(e) => {
                     const raw = e.target.value;
-                    setSelectedPlan(raw === "" ? null : Number(raw));
+                      const digits = raw.replace(/[^\d]/g, "");
+                  if (digits === "") {
+                    setSelectedPlan(null);
+                  } else {
+                    const numericValue = Number(digits);
+                    setSelectedPlan(numericValue);
+                  }
                     markTouched("amount");
                   }}
                   onBlur={() => markTouched("amount")}

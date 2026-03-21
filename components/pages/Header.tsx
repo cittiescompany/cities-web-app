@@ -1,7 +1,7 @@
 'use client';
 
-import { Bell, Menu, MessageSquare, X } from "lucide-react";
-import React, { useState } from "react";
+import { Bell, Menu, MessageSquare, Search, X } from "lucide-react";
+import React, { useEffect, useState } from "react";
 import { SearchBar } from "../SearchBar";
 import {
   currentUser,
@@ -17,10 +17,15 @@ import { useSelector } from "react-redux";
 import { selectUserDetails } from "@/redux/selectors";
 import { RePostType } from "@/types/type-props";
 import UserDropdown from "../UserDropdown";
+import { Input } from "../ui/input";
+import { useRouter } from "next/navigation";
 
 const Header = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const router = useRouter();
+
+  const [searchQuery, setSearchQuery] = useState("");
     const details = useSelector(selectUserDetails);
     
 
@@ -32,14 +37,15 @@ const Header = () => {
     ...initialJobs.map((j) => ({ ...j, type: "job" })),
   ];
 
-  const handleSearch = (item: { type: string }) => {
-    console.log("Selected:", item);
-    // Navigate to the appropriate tab based on item type
-    // if (item.type === "community") {
-    //   //   setActiveTab("community");
-    // } else if (item.type === "job") {
-    //   //   setActiveTab("forsale");
-    // }
+//   useEffect(() => {
+//     if (searchQuery.trim() === "") return;
+//  handleSearch();
+//   }, [searchQuery]);
+  
+
+  const handleSearch = (value: string) => {
+    setSearchQuery(value);
+    router.push("/n/search?query=" + value);
   };
   return (
     <div>
@@ -68,6 +74,16 @@ const Header = () => {
               onSearch={handleSearch}
             /> */}
           </div>
+
+           <div className="relative mx-4 md:w-2/3 lg:w-1/3">
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+          <Input
+            placeholder="Search"
+            value={searchQuery}
+            onChange={(e) => handleSearch(e.target.value)}
+            className="pl-10 bg-gray-100 border-0 rounded-full"
+          />
+        </div>
 
           <div className="flex items-center gap-4">
             <Link href="/n/notifications" className="relative">
