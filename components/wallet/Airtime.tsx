@@ -403,7 +403,6 @@ export default function Airtime() {
                   id="manual-amount"
                   type="number"
                   placeholder="Enter custom amount"
-                  // value={selectedPlan !== null ? selectedPlan : ""}
                   value={
                   selectedPlan !== null ? `₦${formatWithCommas(selectedPlan)}` : ""
                 }

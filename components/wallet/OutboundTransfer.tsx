@@ -334,7 +334,7 @@ import {
 import { ArrowLeft, AlertCircle, ChevronsUpDown, Check, Loader2 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import { cn } from "@/lib/utils";
+import { cn, formatWithCommas } from "@/lib/utils";
 import { toast } from "react-toastify";
 import { TransferPayload } from "@/types/type-props";
 import TransferSuccessModal from "./TransferSuccessModal";
@@ -751,11 +751,19 @@ console.log("Verification response:", response);
                   Amount (₦)
                 </label>
                 <Input
-                  type="number"
+                  type="text"
                   placeholder="Enter amount"
-                  value={amount}
+                    value={
+                                    amount !== null ? `₦${formatWithCommas(Number(amount))}` : ""
+                                  }
                   onChange={(e) => {
-                    setAmount(e.target.value);
+                     const raw = e.target.value;
+                  const digits = raw.replace(/[^\d]/g, "");
+                  if (digits === "") {
+                    setAmount(null);
+                  } else {
+                    setAmount(digits);
+                  }
                     markTouched("amount");
                   }}
                   onBlur={() => markTouched("amount")}

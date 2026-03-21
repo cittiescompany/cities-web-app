@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Loader2 } from "lucide-react";
-import { cn } from "@/lib/utils";
+import { cn, formatWithCommas } from "@/lib/utils";
 import { TransferPayload } from "@/types/type-props";
 import TransferSuccessModal from "./wallet/TransferSuccessModal";
 
@@ -167,11 +167,19 @@ const PaymentModal = ({ isOpen, setIsOpen, userAccount }: PaymentModalProps) => 
                   Amount (₦)
                 </label>
                 <Input
-                  type="number"
+                  type="text"
                   placeholder="Enter amount"
-                  value={amount}
+                  value={
+                                    amount !== null ? `₦${formatWithCommas(Number(amount))}` : ""
+                                  }
                   onChange={(e) => {
-                    setAmount(e.target.value);
+                      const raw = e.target.value;
+                  const digits = raw.replace(/[^\d]/g, "");
+                  if (digits === "") {
+                    setAmount(null);
+                  } else {
+                    setAmount(digits);
+                  }
                     markTouched("amount");
                   }}
                   onBlur={() => markTouched("amount")}

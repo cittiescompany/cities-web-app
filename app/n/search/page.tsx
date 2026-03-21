@@ -36,11 +36,10 @@ const SearchPage = () => {
   }, [query, searchUsers]);
 
   const goToProfile = (userId: string) => {
-    router.push(`/n/profile/${userId}`);
+    router.push(`/n/profile/details?id=${userId}`);
   };
 
-  // Determine what to display in the posts tab: if we have search results, show them; otherwise fallback to general posts?
-  // For now, we use searchedPosts. If you want to combine with general feed, adjust accordingly.
+
 //   const postsToShow = searchedPosts || [];
 
   return (
@@ -88,7 +87,7 @@ const SearchPage = () => {
                       className="w-14 h-14 flex-shrink-0 cursor-pointer"
                     >
                       <AvatarImage src={user?.profile_pic} alt={user?.first_name} />
-                      <AvatarFallback>{user?.first_name.charAt(0)}</AvatarFallback>
+                      <AvatarFallback>{user?.first_name?.charAt(0)}</AvatarFallback>
                     </Avatar>
                   </div>
                   <div>
