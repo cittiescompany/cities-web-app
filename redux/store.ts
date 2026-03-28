@@ -5,14 +5,20 @@ import storage from "redux-persist/lib/storage";
 import { combineReducers } from "@reduxjs/toolkit";
 import userReducer from "./userSlice";
 import tokenReducer from "./tokenSlice";
+const userPersistConfig = {
+  key: "user",
+  storage,
+  blacklist: ["isLoading"],
+};
+
 const persistConfig = {
   key: "root",
   storage,
-  whitelist: ["user", "listing"],
+  whitelist: ["listing"],
 };
 
 const rootReducer = combineReducers({
-  user: userReducer,
+  user: persistReducer(userPersistConfig, userReducer),
   token: tokenReducer,
 });
 

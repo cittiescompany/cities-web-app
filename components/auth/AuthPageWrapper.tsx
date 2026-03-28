@@ -3,6 +3,9 @@
 
 import { useAuth } from "@/hooks/useAuth";
 import { Loader2 } from "lucide-react";
+import { useEffect } from "react";
+import { useDispatch } from "react-redux";
+import { setLoading } from "@/redux/userSlice";
 
 interface AuthPageWrapperProps {
   children: React.ReactNode;
@@ -10,9 +13,20 @@ interface AuthPageWrapperProps {
 
 export default function AuthPageWrapper({ children }: AuthPageWrapperProps) {
   const { user, isLoading, useRedirectIfAuthenticated } = useAuth();
+  const dispatch = useDispatch();
   
   // This will handle the redirect
   useRedirectIfAuthenticated();
+
+  // Safety reset for loading state on mount
+  useEffect(() => {
+    if (isLoading) {
+      const timer = setTimeout(() => {
+        dispatch(setLoading(false));
+      }, 1000);
+      return () => clearTimeout(timer);
+    }
+  }, [isLoading, dispatch]);
 
   // Show loading while checking authentication
   if (isLoading) {
