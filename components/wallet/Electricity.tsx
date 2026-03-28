@@ -98,7 +98,7 @@ const PIN_LENGTH = 4;
 function validateMeterNumber(raw: string): string | undefined {
   const meterNumber = raw.replace(/\D/g, "");
   if (!meterNumber) return "Meter number is required.";
-  if (meterNumber.length !== 11) return "Meter number must be 11 digits.";
+  if (meterNumber.length !== 13) return "Meter number must be 13 digits.";
   return undefined;
 }
 
@@ -124,6 +124,7 @@ export default function Electricity() {
 
   // ── Form state ─────────────────────────────────────────────────────────────
   const [meter_number, setMeter_number] = useState<string>("");
+  const [token, setToken] = useState<string>("");
   const [selectedBranch, setSelectedBranch] = useState<string | null>(null);
   const [amount, setAmount] = useState<number | null>(null);
   const [pin, setPin] = useState<string>("");            // New PIN state
@@ -154,7 +155,7 @@ export default function Electricity() {
 
   const isFormComplete =
     !!selectedBranch &&
-    meter_number.replace(/\D/g, "").length === 11 &&
+    meter_number.replace(/\D/g, "").length === 13 &&
     !!amount &&
     pin.replace(/\D/g, "").length === PIN_LENGTH;
 
@@ -184,16 +185,16 @@ export default function Electricity() {
     setErrors(next);
   }, [meter_number, amount, selectedBranch, pin, touched]);
 
-  // Trigger verification when meter number reaches 11 digits and branch is selected
+  // Trigger verification when meter number reaches 13 digits and branch is selected
   useEffect(() => {
     const normalized = meter_number.replace(/\D/g, "");
     if (
-      normalized.length === 11 &&
+      normalized.length === 13 &&
       selectedBranch &&
       verificationStatus !== "loading"
     ) {
       handleVerifyMeterNumber();
-    } else if (normalized.length !== 11) {
+    } else if (normalized.length !== 13) {
       setVerificationStatus("idle");
       setVerificationResponse(null);
       setVerificationError("");
@@ -234,7 +235,7 @@ export default function Electricity() {
   const handleVerifyMeterNumber = async () => {
     if (!selectedBranch) return;
     const digits = meter_number.replace(/\D/g, "");
-    if (digits.length !== 11) return;
+    if (digits.length !== 13) return;
 
     setVerificationStatus("loading");
     setVerificationError("");
@@ -273,7 +274,8 @@ export default function Electricity() {
       orderId: verificationResponse?.orderId || "", // "2321"
       meter: meter_number.replace(/\D/g, ""),
       disco: selectedBranch.toUpperCase(),
-      phone: user ? `${user.country_code}${user.phone_number}` : "",
+      // phone: user ? `${user.country_code}${user.phone_number}` : "",
+      phone: user ? `0${user.phone_number}` : "",
       paymentType: "B2B",
       vendType: "PREPAID",
       vertical: "ELECTRICITY",
@@ -284,7 +286,9 @@ export default function Electricity() {
     };
 
     await purchaseUtility(payload, {
-      onSuccess: () => {
+      onSuccess: (response) => {
+          const { token } = response.data;
+          setToken(token);
         setIsSuccessModalOpen(true);
         // Reset form
         setMeter_number("");
@@ -391,7 +395,7 @@ export default function Electricity() {
               <div className="relative">
                 <Input
                   type="text"
-                  placeholder="Enter 11-digit meter number"
+                  placeholder="Enter 13-digit meter number"
                   value={meter_number}
                   onChange={(e) => {
                     const digits = e.target.value.replace(/\D/g, "");
@@ -399,7 +403,7 @@ export default function Electricity() {
                     markTouched("meter_number");
                   }}
                   onBlur={() => markTouched("meter_number")}
-                  maxLength={11}
+                  maxLength={13}
                   className={cn(
                     "h-12 border-gray-300 pr-10",
                     touched.meter_number && errors.meter_number
@@ -527,6 +531,7 @@ export default function Electricity() {
           data={{
             type: "electricity",
             recipient: verificationResponse?.name || "the recipient",
+            token,
             amount: Number(responseAmount),
           }}
         />

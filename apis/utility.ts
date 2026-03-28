@@ -15,6 +15,13 @@ interface DataResponse {
     message: string;
   }
 }
+interface DataElectricityResponse {
+  status: number;
+  message: string;
+  data: {
+    token: string;
+  }
+}
 
 interface ErrorResponse {
   status: boolean;
@@ -34,7 +41,7 @@ export const useCheckMeter = () => {
 
 export const usePurchase = () => {
   const queryClient=useQueryClient()
-   return useMutation<DataResponse, AxiosError<ErrorResponse>, PurchasePayload>({
+   return useMutation<DataElectricityResponse, AxiosError<ErrorResponse>, PurchasePayload>({
     mutationFn: async (payload) => {
       return await clientApi.post(`${additionalUrl}create_order`,payload).then((res) => {
        return res.data;
@@ -77,18 +84,19 @@ export const useGetBranches = () => {
     queryKey: ["branches"],
     queryFn: async () => {
          return [
-        { id: 1, name: "Lagos" },
-        { id: 2, name: "Abuja" },
-        { id: 3, name: "Port Harcourt" },
-         { id: 4, name: "Kano" },
-         { id: 5, name: "Ibadan" },
-         { id: 6, name: "Enugu" },
-         { id: 7, name: "Benin City" },
-         { id: 8, name: "Maiduguri" },
-         { id: 9, name: "Kaduna" },
-         { id: 10, name: "Yola" },
+        { id: 1, name: "EKO" },
+        { id: 2, name: "ABUJA" },
+        { id: 3, name: "IKEJA" },
+         { id: 4, name: "PH" },
+         { id: 5, name: "IBADAN" },
+         { id: 6, name: "ENUGU" },
+         { id: 7, name: "JOS" },
+         { id: 8, name: "KADUNA" },
+         { id: 9, name: "KANO" },
+         { id: 10, name: "BENIN" },
+         { id: 11, name: "YOLA" },
       ]
-      // return await clientApi.get(`${additionalUrl}price_list`).then((res) => {
+      // return await clientApi.get(`${additionalUrl}discos`).then((res) => {
       //  return res?.data?.data;
       // });
     },

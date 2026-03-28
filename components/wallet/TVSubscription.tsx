@@ -204,7 +204,7 @@ export default function TVSubscription() {
       meter: tvNumber.replace(/\D/g, ""),
       disco: currentProvider!.name.toUpperCase(),
       phone: user?.phone_number
-        ? `${user.country_code}${user.phone_number}`
+        ? `0${user.phone_number}`
         : "",
       paymentType: "B2B",
       vendType: "PREPAID",

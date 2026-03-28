@@ -3,9 +3,10 @@
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 // import { useLocation } from "wouter";
-import { CheckCircle, Download, Share2, Home } from "lucide-react";
+import { CheckCircle, Download, Share2, Home, Check, Copy } from "lucide-react";
 import vector from "@/assets/images/Vector.png";
 import { formatCurrency } from "@/lib/utils";
+import { useState } from "react";
 
 interface TransferSuccessModalProps {
   isOpen: boolean;
@@ -14,12 +15,21 @@ interface TransferSuccessModalProps {
     recipient: string;
     amount: number;
     type?: string;
+    token?: string;
   }
 }
 
 export default function TransferSuccessModal({ isOpen, onClose, data={recipient:'John Doe', amount:200000, type:'transfer'} }: TransferSuccessModalProps) {
+    const [copied, setCopied] = useState<boolean>(false);
 
   if (!isOpen) return null;
+
+
+    const handleCopy = () => {
+    navigator.clipboard.writeText("0040012023");
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  };
 
   return(
      <div className="fixed inset-0 z-[999] flex items-center justify-center">
@@ -65,8 +75,20 @@ export default function TransferSuccessModal({ isOpen, onClose, data={recipient:
           <h1 className="text-2xl font-bold text-gray-900 mb-4">
             Payment Successful!
           </h1>
-          <p className="text-gray-600 mb-8">
-            You have successfully paid <span className="font-bold">{formatCurrency(data.amount)}</span> for <span className="font-semibold">{data.recipient}</span> electricity bill
+          <p className="text-gray-600 mb-2">
+            You have successfully paid <span className="font-bold">{formatCurrency(data.amount)}</span>.
+          </p>
+          <p className="text-gray-600 mb-8 flex items-center gap-2J">
+           Here is your token: <span className="font-semibold">{data.token}</span><button
+                      onClick={handleCopy}
+                      className="p-2 hover:bg-white/50 rounded-lg transition"
+                    >
+                      {copied ? (
+                        <Check size={16} className="text-green-600" />
+                      ) : (
+                        <Copy size={16} className="text-green-600" />
+                      )}
+                    </button>
           </p>
           </div>
          ):(
